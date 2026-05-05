@@ -2,284 +2,471 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
 <title>LaaiBakkie — SA Bakkie & Truck Hire</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
-:root{--orange:#FF6200;--yellow:#FFD000;--bitcoin:#F7931A;--ln:#9333EA;--dark:#0E0E0E;--surface:#181818;--card:#222;--border:#2E2E2E;--muted:#777;--text:#F0F0F0;}
+:root{
+  --or:#FF6200;--ye:#FFD000;--ln:#9333EA;--dk:#0C0C0C;--sf:#161616;
+  --cd:#1E1E1E;--br:#2A2A2A;--mu:#6B6B6B;--tx:#EFEFEF;
+  --gr:#4ade80;--re:#f87171;--ln2:#c084fc;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
-.display{font-family:'Barlow Condensed',sans-serif;}
-.app-shell{max-width:420px;margin:0 auto;min-height:100vh;position:relative;overflow:hidden;background:var(--dark);}
-.stripe{background:repeating-linear-gradient(45deg,var(--orange) 0px,var(--orange) 8px,#000 8px,#000 16px);}
-.btn-primary{background:var(--orange);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:.05em;text-transform:uppercase;border:none;border-radius:6px;padding:14px 24px;cursor:pointer;width:100%;transition:all .15s;}
-.btn-primary:active{transform:scale(.97);}
-.btn-primary:disabled{opacity:.4;cursor:not-allowed;}
-.btn-secondary{background:transparent;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--border);border-radius:6px;padding:13px 24px;cursor:pointer;width:100%;transition:all .15s;}
-.btn-yellow{background:var(--yellow);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.05em;text-transform:uppercase;border:none;border-radius:6px;padding:13px 24px;cursor:pointer;width:100%;transition:all .15s;}
-.btn-ln{background:linear-gradient(135deg,#7C3AED,#9333EA);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:.05em;text-transform:uppercase;border:none;border-radius:6px;padding:14px 24px;cursor:pointer;width:100%;transition:all .15s;box-shadow:0 0 20px rgba(147,51,234,.3);}
-.input-field{background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;padding:13px 16px;width:100%;outline:none;transition:border-color .2s;}
-.input-field:focus{border-color:var(--orange);}
-.input-field::placeholder{color:var(--muted);}
-.card{background:var(--card);border:1px solid var(--border);border-radius:10px;}
-.card-orange{background:var(--card);border:1px solid var(--orange);border-radius:10px;}
-.card-ln{background:rgba(147,51,234,.06);border:1px solid rgba(147,51,234,.35);border-radius:10px;}
-.vehicle-card{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all .15s;text-align:center;position:relative;}
-.vehicle-card.selected{border-color:var(--orange);background:rgba(255,98,0,.08);}
-.badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,98,0,.15);color:var(--orange);border:1px solid rgba(255,98,0,.3);border-radius:20px;padding:3px 10px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
-.badge-green{background:rgba(34,197,94,.12);color:#4ade80;border-color:rgba(34,197,94,.3);}
-.badge-yellow{background:rgba(255,208,0,.12);color:var(--yellow);border-color:rgba(255,208,0,.3);}
-.badge-ln{background:rgba(147,51,234,.15);color:#c084fc;border-color:rgba(147,51,234,.4);}
-@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
-.pulse-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse-dot 1.4s ease-in-out infinite;display:inline-block;}
-@keyframes radar{0%{transform:scale(.5);opacity:.8;}100%{transform:scale(2.5);opacity:0;}}
-.radar-ring{position:absolute;width:80px;height:80px;border:2px solid var(--orange);border-radius:50%;animation:radar 1.8s ease-out infinite;}
-.radar-ring:nth-child(2){animation-delay:.6s;}
-.radar-ring:nth-child(3){animation-delay:1.2s;}
-@keyframes slide-up{from{transform:translateY(28px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-.slide-up{animation:slide-up .35s ease both;}
-.slide-up-2{animation:slide-up .35s .1s ease both;}
-.slide-up-3{animation:slide-up .35s .2s ease both;}
-.slide-up-4{animation:slide-up .35s .3s ease both;}
-@keyframes truck-move{0%{left:10%;top:60%;}50%{left:55%;top:40%;}100%{left:82%;top:45%;}}
-.moving-truck{position:absolute;font-size:20px;animation:truck-move 6s ease-in-out infinite alternate;filter:drop-shadow(0 0 6px rgba(255,98,0,.8));}
-@keyframes check-pop{0%{transform:scale(0) rotate(-20deg);opacity:0;}70%{transform:scale(1.2) rotate(5deg);}100%{transform:scale(1) rotate(0deg);opacity:1;}}
-.check-pop{animation:check-pop .5s cubic-bezier(.175,.885,.32,1.275) both;}
-@keyframes bolt-spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-.bolt-spin{animation:bolt-spin 1.2s linear infinite;}
-.section-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-.route-line{display:flex;flex-direction:column;align-items:center;}
-.route-dot{width:10px;height:10px;border-radius:50%;}
-.route-dot.pickup{background:#4ade80;}
-.route-dot.dropoff{background:var(--orange);}
-.route-connector{width:2px;height:28px;background:repeating-linear-gradient(to bottom,var(--border) 0px,var(--border) 4px,transparent 4px,transparent 8px);}
-.price-chip{background:var(--orange);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;padding:4px 16px 4px 12px;border-radius:6px;display:inline-block;line-height:1.1;}
-.sats-chip{background:rgba(147,51,234,.2);color:#c084fc;border:1px solid rgba(147,51,234,.4);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;padding:3px 12px;border-radius:6px;display:inline-flex;align-items:center;gap:6px;}
-.pay-option{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px;}
-.pay-option.sel{border-color:var(--orange);background:rgba(255,98,0,.06);}
-.pay-option.sel-ln{border-color:#9333EA;background:rgba(147,51,234,.07);}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border);}
-.bottomnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100;}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;font-size:.65rem;font-weight:500;color:var(--muted);cursor:pointer;gap:4px;transition:color .2s;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.04em;}
-.nav-item.active{color:var(--orange);}
-.scroll-area{overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.scroll-area::-webkit-scrollbar{display:none;}
-.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background .3s;}
-.step-dot.active{background:var(--orange);}
-.star-filled{color:var(--yellow);}
-.star-empty{color:var(--border);}
-.notif-badge{position:absolute;top:-4px;right:-4px;background:var(--orange);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.65rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.qr-wrap{background:#fff;border-radius:12px;padding:10px;display:inline-block;}
-#qr-render canvas,#qr-render img{width:170px!important;height:170px!important;}
-.map-placeholder{width:100%;height:200px;background:var(--surface);border-radius:10px;position:relative;overflow:hidden;}
-.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,98,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,98,0,.06) 1px,transparent 1px);background-size:24px 24px;}
-.map-road-h{position:absolute;height:3px;background:rgba(255,255,255,.1);left:0;right:0;}
-.map-road-v{position:absolute;width:3px;background:rgba(255,255,255,.1);top:0;bottom:0;}
+html,body{height:100%;background:var(--dk);color:var(--tx);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+.D{font-family:'Barlow Condensed',sans-serif;}
+.shell{max-width:430px;margin:0 auto;min-height:100vh;background:var(--dk);position:relative;}
+
+/* Buttons */
+.bp{background:var(--or);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;border:none;border-radius:8px;padding:15px 20px;cursor:pointer;width:100%;transition:transform .12s,background .15s;}
+.bp:active{transform:scale(.97);}
+.bp:disabled{opacity:.38;cursor:not-allowed;}
+.bs{background:transparent;color:var(--tx);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--br);border-radius:8px;padding:14px 20px;cursor:pointer;width:100%;transition:border-color .15s,color .15s;}
+.bs:hover{border-color:var(--or);color:var(--or);}
+.bl{background:linear-gradient(135deg,#6D28D9,#9333EA);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;border:none;border-radius:8px;padding:15px 20px;cursor:pointer;width:100%;box-shadow:0 0 24px rgba(147,51,234,.3);transition:transform .12s;}
+.bl:active{transform:scale(.97);}
+.bl:disabled{opacity:.38;cursor:not-allowed;}
+.by{background:var(--ye);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:.05em;text-transform:uppercase;border:none;border-radius:8px;padding:14px 20px;cursor:pointer;width:100%;}
+
+/* Inputs */
+.inp{background:var(--cd);border:1px solid var(--br);border-radius:8px;color:var(--tx);font-family:'DM Sans',sans-serif;font-size:.92rem;padding:13px 16px;width:100%;outline:none;transition:border-color .2s;}
+.inp:focus{border-color:var(--or);}
+.inp::placeholder{color:var(--mu);}
+.inp-ln:focus{border-color:var(--ln);}
+
+/* Cards */
+.c0{background:var(--cd);border:1px solid var(--br);border-radius:12px;}
+.co{background:var(--cd);border:1px solid var(--or);border-radius:12px;}
+.cl{background:rgba(147,51,234,.06);border:1px solid rgba(147,51,234,.3);border-radius:12px;}
+.cg{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.3);border-radius:12px;}
+
+/* Badges */
+.bg0{display:inline-flex;align-items:center;gap:4px;background:rgba(255,98,0,.14);color:var(--or);border:1px solid rgba(255,98,0,.28);border-radius:20px;padding:3px 10px;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.bgg{background:rgba(74,222,128,.12);color:var(--gr);border-color:rgba(74,222,128,.28);}
+.bgl{background:rgba(147,51,234,.14);color:var(--ln2);border-color:rgba(147,51,234,.3);}
+.bgy{background:rgba(255,208,0,.12);color:var(--ye);border-color:rgba(255,208,0,.28);}
+
+/* Layout */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 14px;border-bottom:1px solid var(--br);}
+.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.scroll::-webkit-scrollbar{display:none;}
+.lbl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin-bottom:8px;}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--sf);border-top:1px solid var(--br);display:flex;z-index:200;}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;font-size:.6rem;font-weight:500;color:var(--mu);cursor:pointer;gap:4px;text-transform:uppercase;letter-spacing:.04em;transition:color .2s;}
+.ni.on{color:var(--or);}
+
+/* Route dots */
+.rl{display:flex;flex-direction:column;align-items:center;}
+.rd{width:10px;height:10px;border-radius:50%;}
+.rd.p{background:var(--gr);}
+.rd.d{background:var(--or);}
+.rc{width:2px;height:26px;background:repeating-linear-gradient(to bottom,var(--br) 0,var(--br) 4px,transparent 4px,transparent 8px);}
+
+/* Vehicle card */
+.vc{background:var(--cd);border:1.5px solid var(--br);border-radius:10px;padding:13px 10px;cursor:pointer;transition:border-color .15s,background .15s;text-align:center;position:relative;}
+.vc.sel{border-color:var(--or);background:rgba(255,98,0,.07);}
+
+/* Pay option */
+.po{background:var(--cd);border:1.5px solid var(--br);border-radius:10px;padding:13px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px;}
+.po.sol{border-color:var(--or);background:rgba(255,98,0,.06);}
+.po.sll{border-color:var(--ln);background:rgba(147,51,234,.07);}
+
+/* Step dots */
+.sd{width:8px;height:8px;border-radius:50%;background:var(--br);transition:background .3s;}
+.sd.on{background:var(--or);}
+
+/* Misc */
+.stripe{background:repeating-linear-gradient(45deg,var(--or) 0,var(--or) 8px,#000 8px,#000 16px);}
+.pchip{background:var(--or);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.7rem;padding:5px 14px 5px 10px;border-radius:6px;line-height:1.1;display:inline-block;}
+.schip{background:rgba(147,51,234,.18);color:var(--ln2);border:1px solid rgba(147,51,234,.35);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;padding:3px 12px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;}
+.star-on{color:var(--ye);}
+.star-off{color:var(--br);}
+.qwrap{background:#fff;border-radius:10px;padding:10px;display:inline-block;}
+
+/* Map mock */
+.map{width:100%;height:200px;background:var(--sf);border-radius:12px;position:relative;overflow:hidden;}
+.mgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,98,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,98,0,.05) 1px,transparent 1px);background-size:22px 22px;}
+.mrh{position:absolute;height:3px;background:rgba(255,255,255,.09);left:0;right:0;}
+.mrv{position:absolute;width:3px;background:rgba(255,255,255,.09);top:0;bottom:0;}
+
+/* Animations */
+@keyframes su{from{transform:translateY(24px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.su{animation:su .32s ease both;}
+.su2{animation:su .32s .1s ease both;}
+.su3{animation:su .32s .18s ease both;}
+.su4{animation:su .32s .26s ease both;}
+@keyframes radar{0%{transform:scale(.5);opacity:.8;}100%{transform:scale(2.8);opacity:0;}}
+.rr{position:absolute;width:76px;height:76px;border:2px solid var(--or);border-radius:50%;animation:radar 1.9s ease-out infinite;}
+.rr:nth-child(2){animation-delay:.65s;}
+.rr:nth-child(3){animation-delay:1.3s;}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.45;transform:scale(1.5);}}
+.pdot{width:7px;height:7px;background:var(--gr);border-radius:50%;animation:pdot 1.4s ease-in-out infinite;display:inline-block;}
+@keyframes tmove{0%{left:8%;top:62%;}40%{left:38%;top:42%;}70%{left:62%;top:50%;}100%{left:82%;top:36%;}}
+.tk{position:absolute;font-size:20px;animation:tmove 7s ease-in-out infinite alternate;filter:drop-shadow(0 0 6px rgba(255,98,0,.8));}
+@keyframes pop{0%{transform:scale(0) rotate(-15deg);opacity:0;}65%{transform:scale(1.15) rotate(4deg);}100%{transform:scale(1) rotate(0);opacity:1;}}
+.pop{animation:pop .45s cubic-bezier(.175,.885,.32,1.275) both;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spin{animation:spin 1s linear infinite;}
+@keyframes pulse-ln{0%,100%{box-shadow:0 0 0 0 rgba(147,51,234,.6);}70%{box-shadow:0 0 0 12px rgba(147,51,234,0);}}
+.pln{animation:pulse-ln 2s ease-in-out infinite;}
+
+/* AI chat bubble */
+.ai-bubble{background:rgba(147,51,234,.1);border:1px solid rgba(147,51,234,.25);border-radius:12px 12px 12px 2px;padding:12px 14px;font-size:.88rem;line-height:1.6;color:var(--tx);position:relative;}
+.user-bubble{background:rgba(255,98,0,.1);border:1px solid rgba(255,98,0,.2);border-radius:12px 12px 2px 12px;padding:12px 14px;font-size:.88rem;line-height:1.6;color:var(--tx);}
+@keyframes thinking{0%,80%,100%{transform:scale(0);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+.dot1{animation:thinking 1.2s .0s ease-in-out infinite;}
+.dot2{animation:thinking 1.2s .2s ease-in-out infinite;}
+.dot3{animation:thinking 1.2s .4s ease-in-out infinite;}
+.typing-dot{width:7px;height:7px;background:var(--ln2);border-radius:50%;display:inline-block;margin:0 2px;}
+
+/* Surge badge */
+.surge{background:rgba(248,113,113,.12);color:#fca5a5;border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:4px 10px;font-size:.7rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;}
+
+/* Notif dot */
+.ndot{position:absolute;top:-3px;right:-3px;background:var(--or);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.6rem;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+
+/* Match score ring */
+.match-ring{width:52px;height:52px;position:relative;flex-shrink:0;}
+.match-ring svg{transform:rotate(-90deg);}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useEffect, useRef } = React;
+const {useState,useEffect,useRef,useMemo,useCallback} = React;
 
 /* ── CONSTANTS ── */
-const BTC_ZAR    = 1820000;
-const SATS_BTC   = 100000000;
-const LN_ADDRESS = 'tediousguilty29@walletofsatoshi.com';
-const zarToSats  = r => Math.round((r / BTC_ZAR) * SATS_BTC);
-const fmtSats    = s => s >= 1000000 ? (s/1000000).toFixed(3)+' M sats' : s >= 1000 ? (s/1000).toFixed(1)+'k sats' : s+' sats';
-const fmtZAR     = n => 'R'+n.toLocaleString('en-ZA');
+const BTC_ZAR    = 1_840_000;
+const SATS_BTC   = 100_000_000;
+const LN_ADDR    = 'tediousguilty29@walletofsatoshi.com';
+const zarToSats  = r => Math.round((r/BTC_ZAR)*SATS_BTC);
+const fmtS       = s => s>=1000?(s/1000).toFixed(1)+'k':s+' sats';
+const fmtR       = n => 'R'+n.toLocaleString('en-ZA');
 const fmtBTC     = s => (s/SATS_BTC).toFixed(8);
-const genInvoice = sats => {
-  const ab = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  const r = n => Array.from({length:n},()=>ab[Math.floor(Math.random()*ab.length)]).join('');
-  return 'lnbc'+sats+'n1p'+r(8)+'pp'+r(52)+'qp'+r(40);
-};
 
-/* ── DATA ── */
 const VEHICLES = [
-  {id:'half', emoji:'🛻', label:'½-ton Bakkie', desc:'Small loads',        base:120, perKm:8,  maxKg:500},
-  {id:'one',  emoji:'🚚', label:'1-ton Bakkie',  desc:'Furniture & appliances', base:180, perKm:11, maxKg:1000},
-  {id:'three',emoji:'🚛', label:'3-ton Truck',   desc:'Full room moves',   base:350, perKm:16, maxKg:3000},
-  {id:'eight',emoji:'🏗️', label:'8-ton Rigid',   desc:'Construction, machinery', base:650, perKm:24, maxKg:8000},
+  {id:'half', e:'🛻', n:'½-ton Bakkie', d:'Small loads · single items',    b:120, k:8,  kg:500},
+  {id:'one',  e:'🚚', n:'1-ton Bakkie', d:'Furniture · appliances',        b:180, k:11, kg:1000},
+  {id:'three',e:'🚛', n:'3-ton Truck',  d:'Full house moves · bulk',       b:350, k:16, kg:3000},
+  {id:'eight',e:'🏗️', n:'8-ton Rigid',  d:'Construction · machinery',      b:650, k:24, kg:8000},
 ];
-const GOODS   = ['Furniture','Building Materials','Groceries / Stock','Appliances','Machinery','Garden / Outdoor','Other'];
-const CITIES  = ['Johannesburg','Pretoria','Boksburg','Germiston','Soweto','Midrand','Centurion','Sandton'];
+const GOODS = ['Furniture','Building Materials','Groceries / Stock','Appliances','Machinery','Garden / Outdoor','Electronics','Clothing & Boxes','Other'];
+const CITIES = ['Johannesburg','Pretoria','Boksburg','Germiston','Soweto','Midrand','Centurion','Sandton','Randburg','Alberton'];
 const PAYMENT = [
-  {id:'lightning', icon:'⚡', label:'Lightning Network', sub:'Instant · Zero fees', ln:true},
-  {id:'cash',      icon:'💵', label:'Cash on delivery',  sub:'Pay driver directly'},
-  {id:'card',      icon:'💳', label:'Card (tap / swipe)', sub:'At delivery'},
-  {id:'snap',      icon:'📲', label:'SnapScan / Ozow',   sub:'QR on arrival'},
+  {id:'lightning',icon:'⚡',lbl:'Lightning Network',sub:'Instant · Zero fees',ln:true},
+  {id:'cash',     icon:'💵',lbl:'Cash on delivery', sub:'Pay driver directly'},
+  {id:'card',     icon:'💳',lbl:'Card (tap / swipe)',sub:'At delivery'},
+  {id:'snap',     icon:'📲',lbl:'SnapScan / Ozow',  sub:'QR on arrival'},
 ];
-const calcPrice = (v,d,h) => { const vv=VEHICLES.find(x=>x.id===v); return Math.round(vv.base+vv.perKm*d+h*80); };
 
-/* ── SMALL HELPERS ── */
-const Stars = ({rating}) => <span>{[1,2,3,4,5].map(i=><span key={i} className={i<=Math.round(rating)?'star-filled':'star-empty'}>★</span>)}</span>;
+const calcPrice = (vid,dist,h) => {
+  const v = VEHICLES.find(x=>x.id===vid);
+  if(!v) return 0;
+  const hour = new Date().getHours();
+  const surge = (hour>=7&&hour<=9)||(hour>=16&&hour<=19) ? 1.2 : 1;
+  return Math.round((v.b + v.k*dist + h*80)*surge);
+};
+const isSurge = () => { const h=new Date().getHours(); return (h>=7&&h<=9)||(h>=16&&h<=19); };
 
-const Ico = ({n,sz=18,c='currentColor'}) => {
-  const m = {
-    back:   <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2.2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>,
-    chk:    <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>,
-    copy:   <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>,
-    wallet: <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M21 12V7a2 2 0 00-2-2H3a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2v-5"/><circle cx="17" cy="12" r="1"/></svg>,
-    home:   <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-    hist:   <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-    user:   <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>,
-    phone:  <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.81 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
-    shield: <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
-    add:    <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>,
-    minus:  <svg width={sz} height={sz} fill="none" stroke={c} strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>,
+/* ── ICON SVGs ── */
+const I = ({n,s=18,c='currentColor'}) => {
+  const p = {
+    back:  <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2.2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>,
+    chk:   <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>,
+    copy:  <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>,
+    home:  <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+    wallet:<svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M21 12V7a2 2 0 00-2-2H3a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2v-5"/><circle cx="17" cy="12" r="1"/></svg>,
+    hist:  <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+    user:  <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg>,
+    phone: <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.81 19.79 19.79 0 01.01 2.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
+    shield:<svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+    add:   <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>,
+    minus: <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>,
+    send:  <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+    ai:    <svg width={s} height={s} fill="none" stroke={c} strokeWidth="2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 110 20A10 10 0 0112 2z"/><path d="M12 8v4l3 3"/></svg>,
+    spark: <svg width={s} height={s} fill={c} viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
   };
-  return m[n]||null;
+  return p[n]||null;
 };
 
-/* ── QR RENDERER ── */
-const QRBlock = ({value}) => {
+const Stars = ({r}) => [1,2,3,4,5].map(i=><span key={i} className={i<=Math.round(r)?'star-on':'star-off'}>★</span>);
+const MatchRing = ({pct,color='var(--or)'}) => {
+  const r=22, c=26, circ=2*Math.PI*r;
+  return (
+    <div className="match-ring">
+      <svg width="52" height="52" viewBox="0 0 52 52">
+        <circle cx={c} cy={c} r={r} fill="none" stroke="var(--br)" strokeWidth="3"/>
+        <circle cx={c} cy={c} r={r} fill="none" stroke={color} strokeWidth="3"
+          strokeDasharray={circ} strokeDashoffset={circ-(pct/100)*circ} strokeLinecap="round"
+          transform={`rotate(-90 ${c} ${c})`} style={{transition:'stroke-dashoffset .8s ease'}}/>
+      </svg>
+      <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Barlow Condensed',fontWeight:900,fontSize:'.78rem',color}}>{pct}%</div>
+    </div>
+  );
+};
+
+/* ── QR ── */
+const QR = ({value}) => {
   const ref = useRef(null);
   useEffect(()=>{
     if(!ref.current) return;
-    ref.current.innerHTML = '';
-    try {
-      new window.QRCode(ref.current, {text:value, width:170, height:170, colorDark:'#000', colorLight:'#fff', correctLevel:window.QRCode.CorrectLevel.M});
-    } catch(e){
-      ref.current.innerHTML = '<div style="width:170px;height:170px;background:#111;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#555;font-size:12px">QR Preview</div>';
-    }
+    ref.current.innerHTML='';
+    try{ new window.QRCode(ref.current,{text:value,width:168,height:168,colorDark:'#000',colorLight:'#fff',correctLevel:window.QRCode.CorrectLevel.M}); }
+    catch(e){ ref.current.innerHTML='<div style="width:168px;height:168px;background:#111;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#555;font-size:11px">QR</div>'; }
   },[value]);
-  return <div className="qr-wrap"><div id="qr-render" ref={ref}/></div>;
+  return <div className="qwrap"><div ref={ref}/></div>;
 };
 
-/* ─────────────────────────
-   SCREEN: LIGHTNING PAYMENT
-───────────────────────── */
-const LightningPayment = ({booking, onPaid, onBack}) => {
-  const sats    = booking.sats;
-  const invoice = useRef(genInvoice(sats)).current;
-  const [tab, setTab]           = useState('invoice');
-  const [status, setStatus]     = useState('pending');
-  const [copied, setCopied]     = useState(false);
-  const [addrCop, setAddrCop]   = useState(false);
-  const [countdown, setCountdown] = useState(90);
+/* ── AI BOOKING PANEL ── */
+const AIBooking = ({onFill, onClose}) => {
+  const [msgs,   setMsgs]   = useState([{role:'ai',text:"Hey! Tell me what you need to move and where. I'll sort the booking for you."}]);
+  const [input,  setInput]  = useState('');
+  const [busy,   setBusy]   = useState(false);
+  const [filled, setFilled] = useState(false);
+  const bottomRef = useRef(null);
+
+  useEffect(()=>{ bottomRef.current?.scrollIntoView({behavior:'smooth'}); },[msgs]);
+
+  const send = async () => {
+    if(!input.trim()||busy) return;
+    const userMsg = input.trim();
+    setInput('');
+    setMsgs(m=>[...m,{role:'user',text:userMsg}]);
+    setBusy(true);
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          model:'claude-sonnet-4-20250514',
+          max_tokens:600,
+          system:`You are LaaiBakkie AI assistant for a SA bakkie/truck hire app. 
+Extract booking details from user's natural language message and respond conversationally in South African English (use words like "lekker", "sharp", "eish" naturally but sparingly).
+Always respond with a JSON block at the end of your message in this exact format:
+<BOOKING>
+{
+  "pickup": "extracted pickup location or empty string",
+  "dropoff": "extracted dropoff location or empty string", 
+  "vehicle": "half|one|three|eight — pick best based on goods described. Default one",
+  "goods": "what they're moving",
+  "helpers": 0,
+  "confidence": 0-100
+}
+</BOOKING>
+If you can't extract enough info, ask a clarifying question and set confidence below 60.
+Keep reply under 60 words before the JSON block.`,
+          messages:[
+            ...msgs.filter(m=>m.role!=='ai'||msgs.indexOf(m)>0).map(m=>({role:m.role==='ai'?'assistant':'user',content:m.text.split('<BOOKING>')[0].trim()})),
+            {role:'user',content:userMsg}
+          ]
+        })
+      });
+      const data = await res.json();
+      const full = data.content?.[0]?.text||'';
+      const displayText = full.split('<BOOKING>')[0].trim();
+      const jsonMatch = full.match(/<BOOKING>([\s\S]*?)<\/BOOKING>/);
+      let extracted = null;
+      if(jsonMatch){ try{ extracted = JSON.parse(jsonMatch[1].trim()); }catch(e){} }
+      setMsgs(m=>[...m,{role:'ai',text:displayText,extracted}]);
+      if(extracted && extracted.confidence>=70){ setFilled(true); }
+    } catch(e){
+      setMsgs(m=>[...m,{role:'ai',text:"Eish, connection issue. Try again or fill the form manually."}]);
+    }
+    setBusy(false);
+  };
+
+  const applyFill = () => {
+    const last = [...msgs].reverse().find(m=>m.extracted && m.extracted.confidence>=70);
+    if(last?.extracted) { onFill(last.extracted); onClose(); }
+  };
+
+  return (
+    <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.7)',zIndex:500,display:'flex',flexDirection:'column',justifyContent:'flex-end',maxWidth:430,margin:'0 auto',left:0,right:0}}>
+      <div style={{background:'var(--sf)',borderRadius:'16px 16px 0 0',border:'1px solid var(--br)',borderBottom:'none',maxHeight:'82vh',display:'flex',flexDirection:'column'}}>
+        {/* Header */}
+        <div style={{padding:'16px 20px',borderBottom:'1px solid var(--br)',display:'flex',alignItems:'center',gap:10}}>
+          <div style={{width:36,height:36,borderRadius:10,background:'linear-gradient(135deg,#6D28D9,#9333EA)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <I n="spark" s={18} c="#fff"/>
+          </div>
+          <div>
+            <div className="D" style={{fontWeight:800,fontSize:'1.1rem',color:var('--ln2')}}>AI BOOKING ASSIST</div>
+            <div style={{fontSize:'.72rem',color:'var(--mu)'}}>Powered by Claude · just describe your move</div>
+          </div>
+          <button onClick={onClose} style={{marginLeft:'auto',background:'none',border:'none',color:'var(--mu)',cursor:'pointer',fontSize:20,lineHeight:1}}>×</button>
+        </div>
+
+        {/* Messages */}
+        <div className="scroll" style={{flex:1,padding:'16px 16px 8px',display:'flex',flexDirection:'column',gap:12}}>
+          {msgs.map((m,i)=>(
+            <div key={i} style={{display:'flex',flexDirection:'column',alignItems:m.role==='ai'?'flex-start':'flex-end',gap:4}}>
+              {m.role==='ai' && <div style={{fontSize:'.68rem',color:'var(--mu)',marginLeft:2,display:'flex',alignItems:'center',gap:4}}><I n="spark" s={10} c="var(--ln2)"/>LaaiBakkie AI</div>}
+              <div className={m.role==='ai'?'ai-bubble':'user-bubble'}>{m.text}</div>
+              {m.extracted && m.extracted.confidence>=70 && (
+                <div className="cl" style={{padding:'8px 12px',fontSize:'.75rem',marginTop:2,width:'100%'}}>
+                  <div style={{color:'var(--mu)',marginBottom:4,fontWeight:600}}>DETECTED:</div>
+                  {m.extracted.pickup&&<div>📍 {m.extracted.pickup}</div>}
+                  {m.extracted.dropoff&&<div>🏁 {m.extracted.dropoff}</div>}
+                  {m.extracted.goods&&<div>📦 {m.extracted.goods}</div>}
+                  <div>🚛 {VEHICLES.find(v=>v.id===m.extracted.vehicle)?.n||'1-ton Bakkie'}</div>
+                  <div style={{marginTop:4}}><span className="bg0 bgl">Match: {m.extracted.confidence}%</span></div>
+                </div>
+              )}
+            </div>
+          ))}
+          {busy && (
+            <div style={{display:'flex',alignItems:'flex-start',gap:4}}>
+              <div className="ai-bubble" style={{display:'flex',alignItems:'center',gap:4,padding:'12px 16px'}}>
+                <span className="typing-dot dot1"/>
+                <span className="typing-dot dot2"/>
+                <span className="typing-dot dot3"/>
+              </div>
+            </div>
+          )}
+          <div ref={bottomRef}/>
+        </div>
+
+        {/* Fill button */}
+        {filled && (
+          <div style={{padding:'0 16px 8px'}}>
+            <button className="bl" onClick={applyFill} style={{fontSize:'.95rem',padding:'12px'}}>
+              ⚡ Auto-fill Booking Form
+            </button>
+          </div>
+        )}
+
+        {/* Input */}
+        <div style={{padding:'10px 16px 28px',display:'flex',gap:10,borderTop:'1px solid var(--br)'}}>
+          <input className="inp inp-ln" value={input} onChange={e=>setInput(e.target.value)}
+            onKeyDown={e=>e.key==='Enter'&&send()}
+            placeholder="e.g. move couch from Boksburg to Germiston..."
+            style={{flex:1,borderRadius:8}}/>
+          <button onClick={send} disabled={busy||!input.trim()} style={{background:busy||!input.trim()?'var(--br)':'var(--ln)',border:'none',borderRadius:8,width:44,height:44,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,transition:'background .2s'}}>
+            <I n="send" s={16} c="#fff"/>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ── LIGHTNING PAYMENT ── */
+const LightningPay = ({booking, onPaid, onBack}) => {
+  const sats = booking.sats;
+  const inv  = useRef(genInv(sats)).current;
+  const [tab,  setTab]  = useState('invoice');
+  const [st,   setSt]   = useState('pending');
+  const [cd,   setCd]   = useState(90);
+  const [cp1,  setCp1]  = useState(false);
+  const [cp2,  setCp2]  = useState(false);
+
+  function genInv(s){
+    const a='abcdefghijklmnopqrstuvwxyz0123456789';
+    const r=n=>Array.from({length:n},()=>a[Math.floor(Math.random()*a.length)]).join('');
+    return `lnbc${s}n1p${r(8)}pp${r(52)}qp${r(36)}`;
+  }
 
   useEffect(()=>{
-    const payAt = 10 + Math.floor(Math.random()*6);
-    let elapsed = 0;
-    const t = setInterval(()=>{
-      elapsed++;
-      setCountdown(c=>{ if(c<=1){clearInterval(t);setStatus('expired');return 0;} return c-1; });
-      if(elapsed===3) setStatus('scanning');
-      if(elapsed===payAt){ clearInterval(t); setStatus('paid'); }
+    const payAt = 10+Math.floor(Math.random()*7);
+    let el=0;
+    const t=setInterval(()=>{
+      el++;
+      setCd(c=>{if(c<=1){clearInterval(t);setSt('expired');return 0;}return c-1;});
+      if(el===3) setSt('scanning');
+      if(el===payAt){clearInterval(t);setSt('paid');}
     },1000);
     return ()=>clearInterval(t);
   },[]);
 
-  const copyText = (txt, setter) => {
-    try{ navigator.clipboard.writeText(txt); }catch(e){}
-    setter(true); setTimeout(()=>setter(false),2200);
-  };
+  const cp=(txt,setter)=>{try{navigator.clipboard.writeText(txt);}catch(e){}setter(true);setTimeout(()=>setter(false),2200);};
 
-  if(status==='paid') return (
+  if(st==='paid') return (
     <div style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'32px 24px',textAlign:'center'}}>
-      <div className="check-pop" style={{width:88,height:88,borderRadius:'50%',background:'rgba(34,197,94,.12)',border:'2px solid #4ade80',display:'flex',alignItems:'center',justifyContent:'center',fontSize:40,marginBottom:24}}>⚡</div>
-      <div className="display" style={{fontSize:'2.4rem',fontWeight:900,color:'#4ade80',letterSpacing:'.02em',marginBottom:4}}>PAYMENT RECEIVED</div>
-      <div style={{color:'var(--muted)',fontSize:'.88rem',marginBottom:28}}>Lightning settled · Routed via Wallet of Satoshi</div>
-      <div className="card-ln" style={{padding:'20px',width:'100%',marginBottom:24}}>
-        {[
-          ['Amount (ZAR)',    fmtZAR(booking.price),  'var(--text)'],
-          ['Amount (sats)',   fmtSats(sats),           '#c084fc'],
-          ['Amount (BTC)',    '₿ '+fmtBTC(sats),       '#fbbf24'],
-          ['Wallet',         LN_ADDRESS,              '#c084fc'],
-          ['Rate locked',    fmtZAR(BTC_ZAR)+'/BTC',  'var(--muted)'],
-        ].map(([k,v,col])=>(
-          <div key={k} style={{display:'flex',justifyContent:'space-between',marginBottom:10,fontSize:'.84rem'}}>
-            <span style={{color:'var(--muted)'}}>{k}</span>
-            <span style={{fontWeight:600,color:col,textAlign:'right',maxWidth:220,wordBreak:'break-all'}}>{v}</span>
+      <div className="pop" style={{width:86,height:86,borderRadius:'50%',background:'rgba(74,222,128,.1)',border:'2px solid var(--gr)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:38,marginBottom:22}}>⚡</div>
+      <div className="D" style={{fontSize:'2.4rem',fontWeight:900,color:'var(--gr)',letterSpacing:'.02em',marginBottom:4}}>PAYMENT RECEIVED</div>
+      <div style={{color:'var(--mu)',fontSize:'.88rem',marginBottom:26}}>Settled via Lightning · Wallet of Satoshi</div>
+      <div className="cl" style={{padding:'18px',width:'100%',marginBottom:24}}>
+        {[['ZAR Amount',fmtR(booking.price),'var(--tx)'],['Sats',fmtS(sats),'var(--ln2)'],['BTC','₿ '+fmtBTC(sats),'#fbbf24'],['Wallet',LN_ADDR,'var(--ln2)'],['Rate locked',fmtR(BTC_ZAR)+'/BTC','var(--mu)']].map(([k,v,col])=>(
+          <div key={k} style={{display:'flex',justifyContent:'space-between',marginBottom:9,fontSize:'.83rem'}}>
+            <span style={{color:'var(--mu)'}}>{k}</span>
+            <span style={{fontWeight:600,color:col,textAlign:'right',maxWidth:210,wordBreak:'break-all'}}>{v}</span>
           </div>
         ))}
       </div>
-      <div style={{fontSize:'.75rem',color:'#6b7280',marginBottom:28,lineHeight:1.7}}>
-        Zero fees · Instant settlement · Censorship-resistant · Powered by Bitcoin
-      </div>
-      <button className="btn-ln" onClick={onPaid}>Continue → Find Driver</button>
+      <button className="bl" onClick={onPaid}>Continue → Find Driver</button>
     </div>
   );
 
-  if(status==='expired') return (
+  if(st==='expired') return (
     <div style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'32px 24px',textAlign:'center'}}>
       <div style={{fontSize:52,marginBottom:14}}>⏱</div>
-      <div className="display" style={{fontSize:'2rem',fontWeight:900,color:'#f87171',marginBottom:8}}>INVOICE EXPIRED</div>
-      <div style={{color:'var(--muted)',fontSize:'.88rem',marginBottom:32}}>Lightning invoices expire after 90s for security. Generate a new one.</div>
-      <button className="btn-ln" style={{marginBottom:12}} onClick={()=>window.location.reload()}>New Invoice</button>
-      <button className="btn-secondary" onClick={onBack}>Go Back</button>
+      <div className="D" style={{fontSize:'2rem',fontWeight:900,color:'var(--re)',marginBottom:8}}>INVOICE EXPIRED</div>
+      <div style={{color:'var(--mu)',fontSize:'.88rem',marginBottom:32}}>Lightning invoices expire after 90s for security.</div>
+      <button className="bl" style={{marginBottom:12}} onClick={()=>window.location.reload()}>Generate New Invoice</button>
+      <button className="bs" onClick={onBack}>Go Back</button>
     </div>
   );
 
   return (
     <div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}>
       <div className="topbar">
-        <button onClick={onBack} style={{background:'none',border:'none',cursor:'pointer',color:'var(--text)',display:'flex',alignItems:'center',gap:6}}><Ico n="back"/></button>
-        <div className="display" style={{fontSize:'1.2rem',fontWeight:800,letterSpacing:'.05em',display:'flex',alignItems:'center',gap:8}}>
-          <span style={{color:'#c084fc'}}>⚡</span> PAY WITH LIGHTNING
+        <button onClick={onBack} style={{background:'none',border:'none',cursor:'pointer',color:'var(--tx)',display:'flex',alignItems:'center',gap:6}}><I n="back"/></button>
+        <div className="D" style={{fontSize:'1.2rem',fontWeight:800,letterSpacing:'.05em',display:'flex',alignItems:'center',gap:7}}>
+          <span style={{color:'var(--ln2)'}}>⚡</span>PAY WITH LIGHTNING
         </div>
-        <span className="badge badge-ln" style={{fontSize:'.62rem',padding:'3px 8px'}}>
-          {status==='scanning' ? <><span className="pulse-dot" style={{width:5,height:5,background:'#c084fc'}}/>Live</> : 'Pending'}
+        <span className="bg0 bgl" style={{fontSize:'.62rem',padding:'3px 8px'}}>
+          {st==='scanning'?<><span className="pdot" style={{width:5,height:5,background:'var(--ln2)'}}/>Scanning</>:'Pending'}
         </span>
       </div>
 
-      <div className="scroll-area" style={{flex:1,padding:'20px 20px 130px'}}>
-        {/* Amount block */}
-        <div className="card-ln" style={{padding:'18px',textAlign:'center',marginBottom:20}}>
-          <div style={{color:'var(--muted)',fontSize:'.7rem',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:4}}>Pay exactly</div>
-          <div className="display" style={{fontSize:'2.5rem',fontWeight:900,color:'#c084fc',lineHeight:1}}>{fmtSats(sats)}</div>
-          <div style={{color:'var(--muted)',fontSize:'.84rem',marginTop:6}}>{fmtZAR(booking.price)} · ₿ {fmtBTC(sats)}</div>
-          <div style={{fontSize:'.7rem',color:'#6b7280',marginTop:4}}>Rate: 1 BTC = {fmtZAR(BTC_ZAR)} (locked at booking)</div>
-          {/* Countdown */}
+      <div className="scroll" style={{flex:1,padding:'18px 18px 130px'}}>
+        <div className="cl" style={{padding:'18px',textAlign:'center',marginBottom:18}}>
+          <div style={{color:'var(--mu)',fontSize:'.7rem',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:4}}>Pay exactly</div>
+          <div className="D" style={{fontSize:'2.5rem',fontWeight:900,color:'var(--ln2)',lineHeight:1}}>{fmtS(sats)}</div>
+          <div style={{color:'var(--mu)',fontSize:'.84rem',marginTop:5}}>{fmtR(booking.price)} · ₿ {fmtBTC(sats)}</div>
+          <div style={{fontSize:'.7rem',color:'#555',marginTop:3}}>1 BTC = {fmtR(BTC_ZAR)} · rate locked at booking</div>
           <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,marginTop:14}}>
             <svg width="38" height="38" viewBox="0 0 38 38">
-              <circle cx="19" cy="19" r="16" fill="none" stroke="var(--border)" strokeWidth="2.5"/>
-              <circle cx="19" cy="19" r="16" fill="none"
-                stroke={countdown>30?'#9333EA':countdown>10?'#fbbf24':'#f87171'} strokeWidth="2.5"
-                strokeDasharray="100" strokeDashoffset={100-(countdown/90)*100}
+              <circle cx="19" cy="19" r="15" fill="none" stroke="var(--br)" strokeWidth="2.5"/>
+              <circle cx="19" cy="19" r="15" fill="none"
+                stroke={cd>30?'#9333EA':cd>10?'#fbbf24':'#f87171'} strokeWidth="2.5"
+                strokeDasharray="94" strokeDashoffset={94-(cd/90)*94}
                 strokeLinecap="round" transform="rotate(-90 19 19)"
-                style={{transition:'stroke-dashoffset 1s linear,stroke .5s'}}/>
+                style={{transition:'stroke-dashoffset 1s linear,stroke .4s'}}/>
             </svg>
-            <span className="display" style={{fontWeight:800,fontSize:'1.1rem',color:countdown>30?'#c084fc':countdown>10?'#fbbf24':'#f87171'}}>{countdown}s</span>
-            <span style={{fontSize:'.75rem',color:'var(--muted)'}}>to expire</span>
+            <span className="D" style={{fontWeight:800,fontSize:'1.1rem',color:cd>30?'var(--ln2)':cd>10?'#fbbf24':'var(--re)'}}>{cd}s</span>
           </div>
         </div>
 
         {/* Tabs */}
-        <div style={{display:'flex',background:'var(--surface)',borderRadius:8,padding:3,gap:2,marginBottom:20}}>
-          {[['invoice','⚡ BOLT11 Invoice'],['address','📬 LN Address']].map(([id,lbl])=>(
-            <div key={id} onClick={()=>setTab(id)} style={{flex:1,textAlign:'center',padding:'9px 4px',borderRadius:6,cursor:'pointer',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:'.82rem',letterSpacing:'.04em',textTransform:'uppercase',background:tab===id?'#7C3AED':'transparent',color:tab===id?'#fff':'var(--muted)',transition:'all .2s'}}>
+        <div style={{display:'flex',background:'var(--sf)',borderRadius:8,padding:3,gap:2,marginBottom:18}}>
+          {[['invoice','⚡ Invoice'],['address','📬 LN Address']].map(([id,lbl])=>(
+            <div key={id} onClick={()=>setTab(id)} style={{flex:1,textAlign:'center',padding:'9px 4px',borderRadius:6,cursor:'pointer',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:'.82rem',textTransform:'uppercase',background:tab===id?'#7C3AED':'transparent',color:tab===id?'#fff':'var(--mu)',transition:'all .2s'}}>
               {lbl}
             </div>
           ))}
         </div>
 
         {tab==='invoice' && (
-          <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:16}}>
-            <QRBlock value={'lightning:'+invoice}/>
-            <div style={{fontSize:'.82rem',color:'var(--muted)',textAlign:'center',lineHeight:1.6,maxWidth:280}}>
-              Open your Lightning wallet and scan the QR, or copy the invoice string below.
-            </div>
-            <div className="card" style={{padding:'12px 14px',width:'100%'}}>
-              <div style={{fontSize:'.67rem',color:'var(--muted)',marginBottom:6,textTransform:'uppercase',letterSpacing:'.08em'}}>BOLT11 Invoice</div>
-              <div style={{fontFamily:'monospace',fontSize:'.7rem',color:'#c084fc',wordBreak:'break-all',lineHeight:1.5,marginBottom:10}}>{invoice.substring(0,60)}…</div>
-              <button onClick={()=>copyText(invoice,setCopied)} style={{background:copied?'rgba(34,197,94,.1)':'rgba(147,51,234,.1)',border:'1px solid '+(copied?'#4ade80':'rgba(147,51,234,.4)'),borderRadius:6,padding:'9px 16px',cursor:'pointer',color:copied?'#4ade80':'#c084fc',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:'.85rem',textTransform:'uppercase',letterSpacing:'.05em',display:'flex',alignItems:'center',gap:8,width:'100%',justifyContent:'center'}}>
-                {copied ? <><Ico n="chk" sz={14} c="#4ade80"/> Copied!</> : <><Ico n="copy" sz={14} c="#c084fc"/> Copy Invoice</>}
+          <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:14}}>
+            <QR value={'lightning:'+inv}/>
+            <div style={{fontSize:'.82rem',color:'var(--mu)',textAlign:'center',lineHeight:1.6,maxWidth:280}}>Scan with your Lightning wallet or copy the invoice below.</div>
+            <div className="c0" style={{padding:'12px 14px',width:'100%'}}>
+              <div style={{fontSize:'.67rem',color:'var(--mu)',marginBottom:5,textTransform:'uppercase',letterSpacing:'.08em'}}>BOLT11 Invoice</div>
+              <div style={{fontFamily:'monospace',fontSize:'.7rem',color:'var(--ln2)',wordBreak:'break-all',lineHeight:1.5,marginBottom:9}}>{inv.substring(0,64)}…</div>
+              <button onClick={()=>cp(inv,setCp1)} style={{background:cp1?'rgba(74,222,128,.1)':'rgba(147,51,234,.1)',border:'1px solid '+(cp1?'var(--gr)':'rgba(147,51,234,.4)'),borderRadius:6,padding:'9px 16px',cursor:'pointer',color:cp1?'var(--gr)':'var(--ln2)',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:'.85rem',textTransform:'uppercase',letterSpacing:'.05em',display:'flex',alignItems:'center',gap:8,width:'100%',justifyContent:'center'}}>
+                {cp1?<><I n="chk" s={14} c="var(--gr)"/>Copied!</>:<><I n="copy" s={14} c="var(--ln2)"/>Copy Invoice</>}
               </button>
             </div>
-            <div className="card" style={{padding:'12px 14px',width:'100%'}}>
-              <div style={{fontSize:'.7rem',color:'var(--muted)',marginBottom:8,textTransform:'uppercase',letterSpacing:'.08em'}}>Compatible wallets</div>
+            <div className="c0" style={{padding:'12px 14px',width:'100%'}}>
+              <div style={{fontSize:'.7rem',color:'var(--mu)',marginBottom:7,textTransform:'uppercase',letterSpacing:'.08em'}}>Compatible wallets</div>
               <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
-                {['Wallet of Satoshi','Zeus','Muun','Phoenix','Breez','Blue Wallet','Strike'].map(w=>(
-                  <span key={w} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:4,padding:'3px 10px',fontSize:'.72rem',color:'var(--muted)'}}>{w}</span>
+                {['Wallet of Satoshi','Zeus','Muun','Phoenix','Breez','Blue Wallet','Strike','Blink'].map(w=>(
+                  <span key={w} style={{background:'var(--sf)',border:'1px solid var(--br)',borderRadius:4,padding:'3px 9px',fontSize:'.7rem',color:'var(--mu)'}}>{w}</span>
                 ))}
               </div>
             </div>
@@ -287,28 +474,26 @@ const LightningPayment = ({booking, onPaid, onBack}) => {
         )}
 
         {tab==='address' && (
-          <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:16}}>
-            <QRBlock value={'lightning:'+LN_ADDRESS}/>
-            <div style={{fontSize:'.82rem',color:'var(--muted)',textAlign:'center',lineHeight:1.6,maxWidth:290}}>
-              Send directly to the Lightning address. Amount must match exactly or payment will fail.
-            </div>
-            <div className="card-ln" style={{padding:'14px 16px',width:'100%'}}>
-              <div style={{fontSize:'.67rem',color:'var(--muted)',marginBottom:6,textTransform:'uppercase',letterSpacing:'.08em'}}>Lightning Address (LNURL-Pay)</div>
-              <div style={{fontFamily:'monospace',fontWeight:700,color:'#c084fc',fontSize:'.92rem',marginBottom:12,wordBreak:'break-all'}}>{LN_ADDRESS}</div>
-              <button onClick={()=>copyText(LN_ADDRESS,setAddrCop)} style={{background:addrCop?'rgba(34,197,94,.1)':'rgba(147,51,234,.1)',border:'1px solid '+(addrCop?'#4ade80':'rgba(147,51,234,.4)'),borderRadius:6,padding:'9px 16px',cursor:'pointer',color:addrCop?'#4ade80':'#c084fc',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:'.85rem',textTransform:'uppercase',letterSpacing:'.05em',display:'flex',alignItems:'center',gap:8,width:'100%',justifyContent:'center'}}>
-                {addrCop ? <><Ico n="chk" sz={14} c="#4ade80"/> Copied!</> : <><Ico n="copy" sz={14} c="#c084fc"/> Copy Address</>}
+          <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:14}}>
+            <QR value={'lightning:'+LN_ADDR}/>
+            <div style={{fontSize:'.82rem',color:'var(--mu)',textAlign:'center',lineHeight:1.6,maxWidth:290}}>Send directly to the driver's Lightning address. Amount must match exactly.</div>
+            <div className="cl" style={{padding:'14px',width:'100%'}}>
+              <div style={{fontSize:'.67rem',color:'var(--mu)',marginBottom:5,textTransform:'uppercase',letterSpacing:'.08em'}}>Lightning Address</div>
+              <div style={{fontFamily:'monospace',fontWeight:700,color:'var(--ln2)',fontSize:'.92rem',marginBottom:11,wordBreak:'break-all'}}>{LN_ADDR}</div>
+              <button onClick={()=>cp(LN_ADDR,setCp2)} style={{background:cp2?'rgba(74,222,128,.1)':'rgba(147,51,234,.1)',border:'1px solid '+(cp2?'var(--gr)':'rgba(147,51,234,.4)'),borderRadius:6,padding:'9px 16px',cursor:'pointer',color:cp2?'var(--gr)':'var(--ln2)',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:'.85rem',textTransform:'uppercase',letterSpacing:'.05em',display:'flex',alignItems:'center',gap:8,width:'100%',justifyContent:'center'}}>
+                {cp2?<><I n="chk" s={14} c="var(--gr)"/>Copied!</>:<><I n="copy" s={14} c="var(--ln2)"/>Copy Address</>}
               </button>
             </div>
-            <div className="card" style={{padding:'12px 14px',width:'100%',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-              <span style={{fontSize:'.82rem',color:'var(--muted)'}}>Send exactly</span>
-              <span className="sats-chip">⚡ {fmtSats(sats)}</span>
+            <div className="c0" style={{padding:'12px 14px',width:'100%',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span style={{fontSize:'.82rem',color:'var(--mu)'}}>Send exactly</span>
+              <span className="schip">⚡ {fmtS(sats)}</span>
             </div>
-            <div className="card" style={{padding:'12px 14px',width:'100%'}}>
-              <div style={{fontSize:'.7rem',color:'var(--muted)',marginBottom:8,textTransform:'uppercase',letterSpacing:'.08em'}}>Why Lightning Network?</div>
-              {['~1 second settlement','Zero transaction fees','No chargebacks — final','Permissionless & global','Bitcoin-native money'].map(f=>(
-                <div key={f} style={{display:'flex',alignItems:'center',gap:8,padding:'4px 0',fontSize:'.78rem'}}>
-                  <span style={{color:'#c084fc',fontSize:11}}>⚡</span>
-                  <span style={{color:'var(--muted)'}}>{f}</span>
+            <div className="c0" style={{padding:'12px 14px',width:'100%'}}>
+              <div style={{fontSize:'.7rem',color:'var(--mu)',marginBottom:7,textTransform:'uppercase',letterSpacing:'.08em'}}>Why Lightning?</div>
+              {['~1 second settlement','Zero fees — no middlemen','Irreversible — no chargebacks','Permissionless · Bitcoin-native','Works 24/7 including load-shedding'].map(f=>(
+                <div key={f} style={{display:'flex',alignItems:'center',gap:8,padding:'3px 0',fontSize:'.78rem'}}>
+                  <span style={{color:'var(--ln2)',fontSize:11}}>⚡</span>
+                  <span style={{color:'var(--mu)'}}>{f}</span>
                 </div>
               ))}
             </div>
@@ -316,15 +501,12 @@ const LightningPayment = ({booking, onPaid, onBack}) => {
         )}
       </div>
 
-      {/* Status bar */}
-      <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:420,background:'var(--dark)',borderTop:'1px solid var(--border)',padding:'14px 20px 28px'}}>
-        <div className="card-ln" style={{padding:'12px 16px',display:'flex',alignItems:'center',gap:12}}>
-          <div className={status==='scanning'?'bolt-spin':''} style={{fontSize:18}}>⚡</div>
+      <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:430,background:'var(--dk)',borderTop:'1px solid var(--br)',padding:'13px 18px 26px'}}>
+        <div className="cl" style={{padding:'11px 14px',display:'flex',alignItems:'center',gap:11}}>
+          <div className={st==='scanning'?'spin':''} style={{fontSize:18}}>⚡</div>
           <div style={{flex:1}}>
-            <div className="display" style={{fontWeight:800,fontSize:'.95rem',color:'#c084fc'}}>
-              {status==='pending'?'Awaiting payment…':'Payment detected — confirming…'}
-            </div>
-            <div style={{fontSize:'.7rem',color:'var(--muted)'}}>Polling Lightning node · Secured by Bitcoin</div>
+            <div className="D" style={{fontWeight:800,fontSize:'.95rem',color:'var(--ln2)'}}>{st==='pending'?'Awaiting payment…':'Payment detected · confirming…'}</div>
+            <div style={{fontSize:'.7rem',color:'var(--mu)'}}>Polling node · Secured by Bitcoin</div>
           </div>
         </div>
       </div>
@@ -332,209 +514,240 @@ const LightningPayment = ({booking, onPaid, onBack}) => {
   );
 };
 
-/* ─────────── SPLASH ─────────── */
+/* ── SPLASH ── */
 const Splash = ({onRole}) => (
   <div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}>
-    <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'40px 32px 20px'}}>
-      <div className="slide-up" style={{width:72,height:72,background:'var(--orange)',borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',fontSize:36,boxShadow:'0 0 40px rgba(255,98,0,.4)',marginBottom:16}}>🚛</div>
-      <div className="slide-up-2 display" style={{fontSize:'3.2rem',fontWeight:900,lineHeight:1,marginBottom:6,textAlign:'center',letterSpacing:'-.02em'}}>LAAI<span style={{color:'var(--orange)'}}>BAKKIE</span></div>
-      <div className="slide-up-3" style={{color:'var(--muted)',fontSize:'.9rem',textAlign:'center',maxWidth:240,lineHeight:1.5}}>SA on-demand bakkie &amp; truck hire. Pay with cash, card, or Bitcoin Lightning.</div>
-      <div className="slide-up-4" style={{display:'flex',gap:8,marginTop:20,flexWrap:'wrap',justifyContent:'center'}}>
-        <span className="badge badge-green"><span className="pulse-dot" style={{width:5,height:5}}/>Live · Gauteng</span>
-        <span className="badge badge-ln">⚡ Lightning Pay</span>
-        <span className="badge" style={{background:'rgba(247,147,26,.1)',color:'#fbbf24',borderColor:'rgba(247,147,26,.3)'}}>₿ Bitcoin</span>
+    <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'40px 28px 20px'}}>
+      <div className="su" style={{width:74,height:74,background:'var(--or)',borderRadius:18,display:'flex',alignItems:'center',justifyContent:'center',fontSize:38,boxShadow:'0 0 40px rgba(255,98,0,.4)',marginBottom:18}}>🚛</div>
+      <div className="su2 D" style={{fontSize:'3.4rem',fontWeight:900,lineHeight:1,marginBottom:6,textAlign:'center',letterSpacing:'-.02em'}}>LAAI<span style={{color:'var(--or)'}}>BAKKIE</span></div>
+      <div className="su3" style={{color:'var(--mu)',fontSize:'.9rem',textAlign:'center',maxWidth:250,lineHeight:1.6}}>SA on-demand bakkie &amp; truck hire. AI-powered booking. Lightning payments.</div>
+      <div className="su4" style={{display:'flex',gap:8,marginTop:20,flexWrap:'wrap',justifyContent:'center'}}>
+        <span className="bg0 bgg"><span className="pdot" style={{width:5,height:5}}/>Live · Gauteng</span>
+        <span className="bg0 bgl">⚡ Lightning Pay</span>
+        <span className="bg0" style={{background:'rgba(247,147,26,.1)',color:'#fbbf24',borderColor:'rgba(247,147,26,.28)'}}>🤖 AI Booking</span>
       </div>
-      <div style={{position:'relative',width:'100%',height:80,marginTop:28}}>
-        <div style={{position:'absolute',fontSize:28,animation:'truck-move 5s ease-in-out infinite alternate',filter:'drop-shadow(0 0 8px rgba(255,98,0,.6))'}}>🚛</div>
-        <div style={{position:'absolute',fontSize:20,left:'40%',top:'40%',animation:'truck-move 7s 1s ease-in-out infinite alternate',filter:'drop-shadow(0 0 6px rgba(255,208,0,.5))'}}>🛻</div>
+      <div style={{position:'relative',width:'100%',height:80,marginTop:30}}>
+        <div className="tk" style={{fontSize:28,filter:'drop-shadow(0 0 8px rgba(255,98,0,.6))'}}>🚛</div>
+        <div className="tk" style={{fontSize:20,animationDelay:'1.5s',animationDuration:'8s',filter:'drop-shadow(0 0 5px rgba(255,208,0,.5))'}}>🛻</div>
       </div>
     </div>
     <div className="stripe" style={{height:4}}/>
-    <div style={{background:'var(--surface)',padding:'28px 24px 40px'}}>
-      <div style={{color:'var(--muted)',fontSize:'.75rem',fontWeight:600,textAlign:'center',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:16}}>I want to…</div>
-      <div style={{display:'flex',flexDirection:'column',gap:12}}>
-        <button className="btn-primary" style={{fontSize:'1.2rem',padding:18}} onClick={()=>onRole('customer')}>📦  Book a Bakkie / Truck</button>
-        <button className="btn-secondary" onClick={()=>onRole('driver')}>🚛  I'm a Driver — Earn Money</button>
+    <div style={{background:'var(--sf)',padding:'26px 22px 40px'}}>
+      <div style={{color:'var(--mu)',fontSize:'.72rem',fontWeight:600,textAlign:'center',letterSpacing:'.1em',textTransform:'uppercase',marginBottom:14}}>I want to…</div>
+      <div style={{display:'flex',flexDirection:'column',gap:11}}>
+        <button className="bp" style={{fontSize:'1.15rem',padding:17}} onClick={()=>onRole('customer')}>📦  Book a Bakkie / Truck</button>
+        <button className="bs" onClick={()=>onRole('driver')}>🚛  I'm a Driver — Earn Money</button>
       </div>
-      <div style={{textAlign:'center',marginTop:14,color:'var(--muted)',fontSize:'.72rem'}}>Cash · Card · SnapScan · <span style={{color:'#c084fc'}}>⚡ Lightning</span></div>
+      <div style={{textAlign:'center',marginTop:14,color:'var(--mu)',fontSize:'.72rem'}}>Cash · Card · SnapScan · <span style={{color:'var(--ln2)'}}>⚡ Lightning</span> · <span style={{color:'#fbbf24'}}>🤖 AI</span></div>
     </div>
   </div>
 );
 
-/* ─────────── BOOKING ─────────── */
-const CustomerBooking = ({onNext, onBack}) => {
-  const [pickup, setPickup]   = useState('');
+/* ── BOOKING ── */
+const Booking = ({onNext, onBack}) => {
+  const [step,    setStep]    = useState(1);
+  const [pickup,  setPickup]  = useState('');
   const [dropoff, setDropoff] = useState('');
-  const [step, setStep]       = useState(1);
   const [vehicle, setVehicle] = useState('one');
-  const [goods, setGoods]     = useState('Furniture');
+  const [goods,   setGoods]   = useState('Furniture');
   const [helpers, setHelpers] = useState(0);
   const [payment, setPayment] = useState('lightning');
-  const [dist] = useState(Math.floor(Math.random()*18)+4);
+  const [showAI,  setShowAI]  = useState(false);
+  const [dist] = useState(useMemo(()=>Math.floor(Math.random()*18)+4,[]));
+
   const price = calcPrice(vehicle, dist, helpers);
   const sats  = zarToSats(price);
+  const surge = isSurge();
   const valid = pickup.trim().length>3 && dropoff.trim().length>3;
 
+  const handleAIFill = (ex) => {
+    if(ex.pickup)  setPickup(ex.pickup);
+    if(ex.dropoff) setDropoff(ex.dropoff);
+    if(ex.vehicle) setVehicle(ex.vehicle);
+    if(ex.goods)   setGoods(ex.goods);
+    if(ex.helpers) setHelpers(ex.helpers);
+  };
+
   if(step===1) return (
-    <div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}>
-      <div className="topbar">
-        <button onClick={onBack} style={{background:'none',border:'none',cursor:'pointer',color:'var(--text)',display:'flex',alignItems:'center',gap:6}}><Ico n="back"/></button>
-        <div className="display" style={{fontSize:'1.3rem',fontWeight:800,letterSpacing:'.05em'}}>BOOK A BAKKIE</div>
-        <div style={{width:24}}/>
-      </div>
-      <div className="scroll-area" style={{flex:1,padding:'20px 20px 120px'}}>
-        <div style={{display:'flex',gap:6,marginBottom:24,justifyContent:'center'}}>{[1,2,3].map(s=><div key={s} className={'step-dot'+(s===1?' active':'')}/>)}</div>
-        <div className="section-label">Where to?</div>
-        <div className="card" style={{padding:'4px 0',marginBottom:20}}>
-          <div style={{display:'flex',alignItems:'stretch',padding:'0 16px'}}>
-            <div className="route-line" style={{paddingTop:18,paddingBottom:14}}>
-              <div className="route-dot pickup"/><div className="route-connector"/><div className="route-dot dropoff"/>
+    <>
+      {showAI && <AIBooking onFill={handleAIFill} onClose={()=>setShowAI(false)}/>}
+      <div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}>
+        <div className="topbar">
+          <button onClick={onBack} style={{background:'none',border:'none',cursor:'pointer',color:'var(--tx)',display:'flex',alignItems:'center',gap:6}}><I n="back"/></button>
+          <div className="D" style={{fontSize:'1.3rem',fontWeight:800,letterSpacing:'.05em'}}>BOOK A BAKKIE</div>
+          <button onClick={()=>setShowAI(true)} className="bg0 bgl" style={{cursor:'pointer',border:'none',padding:'6px 12px',display:'flex',alignItems:'center',gap:5,fontSize:'.68rem'}}>
+            <I n="spark" s={11} c="var(--ln2)"/>AI
+          </button>
+        </div>
+        <div className="scroll" style={{flex:1,padding:'18px 18px 120px'}}>
+          <div style={{display:'flex',gap:6,marginBottom:22,justifyContent:'center'}}>{[1,2,3].map(s=><div key={s} className={'sd'+(s===1?' on':'')}/>)}</div>
+
+          {/* AI prompt chip */}
+          <div className="cl" style={{padding:'12px 14px',marginBottom:18,display:'flex',alignItems:'center',gap:10,cursor:'pointer'}} onClick={()=>setShowAI(true)}>
+            <div style={{width:32,height:32,borderRadius:8,background:'linear-gradient(135deg,#6D28D9,#9333EA)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+              <I n="spark" s={16} c="#fff"/>
             </div>
-            <div style={{flex:1,paddingLeft:14}}>
-              <div style={{paddingBottom:6,paddingTop:12}}>
-                <input className="input-field" placeholder="Pickup address or area" value={pickup} onChange={e=>setPickup(e.target.value)} style={{border:'none',background:'transparent',paddingLeft:0}}/>
-                <div style={{height:1,background:'var(--border)',margin:'4px 0'}}/>
+            <div>
+              <div style={{fontWeight:600,fontSize:'.88rem',color:'var(--ln2)'}}>Try AI Booking</div>
+              <div style={{fontSize:'.72rem',color:'var(--mu)'}}>Just describe your move in plain language</div>
+            </div>
+            <span style={{marginLeft:'auto',color:'var(--ln2)',fontSize:'.75rem',fontFamily:'Barlow Condensed',fontWeight:700}}>TRY →</span>
+          </div>
+
+          <div className="lbl">Where to?</div>
+          <div className="c0" style={{padding:'4px 0',marginBottom:18}}>
+            <div style={{display:'flex',alignItems:'stretch',padding:'0 16px'}}>
+              <div className="rl" style={{paddingTop:18,paddingBottom:14}}>
+                <div className="rd p"/><div className="rc"/><div className="rd d"/>
               </div>
-              <div style={{paddingTop:6,paddingBottom:12}}>
-                <input className="input-field" placeholder="Drop-off address or area" value={dropoff} onChange={e=>setDropoff(e.target.value)} style={{border:'none',background:'transparent',paddingLeft:0}}/>
+              <div style={{flex:1,paddingLeft:13}}>
+                <div style={{paddingBottom:5,paddingTop:11}}>
+                  <input className="inp" placeholder="Pickup address or area" value={pickup} onChange={e=>setPickup(e.target.value)} style={{border:'none',background:'transparent',paddingLeft:0}}/>
+                  <div style={{height:1,background:'var(--br)',margin:'3px 0'}}/>
+                </div>
+                <div style={{paddingTop:5,paddingBottom:11}}>
+                  <input className="inp" placeholder="Drop-off address or area" value={dropoff} onChange={e=>setDropoff(e.target.value)} style={{border:'none',background:'transparent',paddingLeft:0}}/>
+                </div>
               </div>
             </div>
           </div>
+
+          <div className="lbl">Quick select</div>
+          <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:4}}>
+            {CITIES.map(c=>(
+              <button key={c} onClick={()=>{if(!pickup)setPickup(c);else setDropoff(c);}} style={{background:'var(--cd)',border:'1px solid var(--br)',borderRadius:20,padding:'6px 13px',fontSize:'.78rem',color:'var(--tx)',cursor:'pointer',fontFamily:'DM Sans',transition:'border-color .15s'}} onMouseEnter={e=>e.target.style.borderColor='var(--or)'} onMouseLeave={e=>e.target.style.borderColor='var(--br)'}>{c}</button>
+            ))}
+          </div>
         </div>
-        <div className="section-label">Quick select</div>
-        <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:24}}>
-          {CITIES.map(c=>(
-            <button key={c} onClick={()=>{if(!pickup)setPickup(c);else setDropoff(c);}} style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:20,padding:'6px 14px',fontSize:'.8rem',color:'var(--text)',cursor:'pointer',fontFamily:'DM Sans',transition:'border-color .2s'}} onMouseEnter={e=>e.target.style.borderColor='var(--orange)'} onMouseLeave={e=>e.target.style.borderColor='var(--border)'}>{c}</button>
-          ))}
+        <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:430,background:'var(--dk)',borderTop:'1px solid var(--br)',padding:'14px 18px 28px'}}>
+          <button className="bp" disabled={!valid} onClick={()=>setStep(2)} style={{opacity:valid?1:.38}}>Next — Choose Vehicle</button>
         </div>
       </div>
-      <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:420,background:'var(--dark)',borderTop:'1px solid var(--border)',padding:'16px 20px 28px'}}>
-        <button className="btn-primary" disabled={!valid} onClick={()=>setStep(2)} style={{opacity:valid?1:.4}}>Next — Choose Vehicle</button>
-      </div>
-    </div>
+    </>
   );
 
   return (
     <div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}>
       <div className="topbar">
-        <button onClick={()=>setStep(1)} style={{background:'none',border:'none',cursor:'pointer',color:'var(--text)',display:'flex',alignItems:'center',gap:6}}><Ico n="back"/></button>
-        <div className="display" style={{fontSize:'1.3rem',fontWeight:800,letterSpacing:'.05em'}}>LOAD DETAILS</div>
-        <div style={{width:24}}/>
+        <button onClick={()=>setStep(1)} style={{background:'none',border:'none',cursor:'pointer',color:'var(--tx)',display:'flex',alignItems:'center',gap:6}}><I n="back"/></button>
+        <div className="D" style={{fontSize:'1.3rem',fontWeight:800,letterSpacing:'.05em'}}>LOAD DETAILS</div>
+        {surge && <span className="surge">🔥 Surge</span>}
       </div>
-      <div className="scroll-area" style={{flex:1,padding:'20px 20px 160px'}}>
-        <div style={{display:'flex',gap:6,marginBottom:24,justifyContent:'center'}}>{[1,2,3].map(s=><div key={s} className={'step-dot'+(s===2?' active':'')}/>)}</div>
+      <div className="scroll" style={{flex:1,padding:'18px 18px 160px'}}>
+        <div style={{display:'flex',gap:6,marginBottom:22,justifyContent:'center'}}>{[1,2,3].map(s=><div key={s} className={'sd'+(s===2?' on':'')}/>)}</div>
 
-        <div className="section-label">Vehicle type</div>
+        <div className="lbl">Vehicle type</div>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:20}}>
           {VEHICLES.map(v=>(
-            <div key={v.id} className={'vehicle-card'+(vehicle===v.id?' selected':'')} onClick={()=>setVehicle(v.id)}>
-              {vehicle===v.id && <div style={{position:'absolute',top:8,right:8,width:18,height:18,background:'var(--orange)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center'}}><Ico n="chk" sz={10} c="#000"/></div>}
-              <div style={{fontSize:28,marginBottom:4}}>{v.emoji}</div>
-              <div className="display" style={{fontWeight:800,fontSize:'.9rem'}}>{v.label}</div>
-              <div style={{fontSize:'.7rem',color:'var(--muted)',marginTop:2,lineHeight:1.3}}>{v.desc}</div>
-              <div style={{marginTop:6,fontSize:'.75rem',color:'var(--orange)',fontWeight:600}}>From {fmtZAR(v.base)}</div>
+            <div key={v.id} className={'vc'+(vehicle===v.id?' sel':'')} onClick={()=>setVehicle(v.id)}>
+              {vehicle===v.id&&<div style={{position:'absolute',top:7,right:7,width:18,height:18,background:'var(--or)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center'}}><I n="chk" s={10} c="#000"/></div>}
+              <div style={{fontSize:28,marginBottom:4}}>{v.e}</div>
+              <div className="D" style={{fontWeight:800,fontSize:'.9rem'}}>{v.n}</div>
+              <div style={{fontSize:'.69rem',color:'var(--mu)',marginTop:2,lineHeight:1.3}}>{v.d}</div>
+              <div style={{marginTop:5,fontSize:'.74rem',color:'var(--or)',fontWeight:600}}>From {fmtR(v.b)}</div>
+              <div style={{fontSize:'.68rem',color:'var(--mu)',marginTop:1}}>Max {v.kg}kg</div>
             </div>
           ))}
         </div>
 
-        <div className="section-label">What are you moving?</div>
-        <select className="input-field" value={goods} onChange={e=>setGoods(e.target.value)} style={{marginBottom:20,appearance:'none',cursor:'pointer'}}>
+        <div className="lbl">What are you moving?</div>
+        <select className="inp" value={goods} onChange={e=>setGoods(e.target.value)} style={{marginBottom:20,appearance:'none',cursor:'pointer'}}>
           {GOODS.map(g=><option key={g} value={g}>{g}</option>)}
         </select>
 
-        <div className="section-label">Need helpers? (+R80 each)</div>
-        <div className="card" style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
+        <div className="lbl">Helpers? (+R80 each)</div>
+        <div className="c0" style={{padding:'13px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
           <div>
-            <div style={{fontWeight:600,fontSize:'.95rem'}}>{helpers===0?'No helpers':helpers+' Helper'+(helpers>1?'s':'')}</div>
-            <div style={{fontSize:'.78rem',color:'var(--muted)'}}>Loading &amp; offloading</div>
+            <div style={{fontWeight:600,fontSize:'.92rem'}}>{helpers===0?'No helpers':helpers+' helper'+(helpers>1?'s':'')}</div>
+            <div style={{fontSize:'.76rem',color:'var(--mu)'}}>Loading &amp; offloading</div>
           </div>
-          <div style={{display:'flex',alignItems:'center',gap:12}}>
-            <button onClick={()=>setHelpers(Math.max(0,helpers-1))} disabled={helpers===0} style={{width:32,height:32,borderRadius:'50%',background:'var(--surface)',border:'1px solid var(--border)',cursor:'pointer',color:'var(--text)',display:'flex',alignItems:'center',justifyContent:'center'}}><Ico n="minus" sz={14}/></button>
-            <span className="display" style={{fontWeight:800,fontSize:'1.4rem',minWidth:20,textAlign:'center'}}>{helpers}</span>
-            <button onClick={()=>setHelpers(Math.min(3,helpers+1))} disabled={helpers===3} style={{width:32,height:32,borderRadius:'50%',background:'var(--surface)',border:'1px solid var(--border)',cursor:'pointer',color:'var(--text)',display:'flex',alignItems:'center',justifyContent:'center'}}><Ico n="add" sz={14}/></button>
+          <div style={{display:'flex',alignItems:'center',gap:13}}>
+            <button onClick={()=>setHelpers(Math.max(0,helpers-1))} disabled={helpers===0} style={{width:32,height:32,borderRadius:'50%',background:'var(--sf)',border:'1px solid var(--br)',cursor:'pointer',color:'var(--tx)',display:'flex',alignItems:'center',justifyContent:'center'}}><I n="minus" s={14}/></button>
+            <span className="D" style={{fontWeight:900,fontSize:'1.4rem',minWidth:18,textAlign:'center'}}>{helpers}</span>
+            <button onClick={()=>setHelpers(Math.min(3,helpers+1))} disabled={helpers===3} style={{width:32,height:32,borderRadius:'50%',background:'var(--sf)',border:'1px solid var(--br)',cursor:'pointer',color:'var(--tx)',display:'flex',alignItems:'center',justifyContent:'center'}}><I n="add" s={14}/></button>
           </div>
         </div>
 
-        <div className="section-label">Payment method</div>
+        <div className="lbl">Payment method</div>
         <div style={{display:'flex',flexDirection:'column',gap:8,marginBottom:20}}>
           {PAYMENT.map(p=>(
-            <div key={p.id} className={'pay-option'+(payment===p.id?(p.ln?' sel-ln':' sel'):'')} onClick={()=>setPayment(p.id)}>
+            <div key={p.id} className={'po'+(payment===p.id?(p.ln?' sll':' sol'):'')} onClick={()=>setPayment(p.id)}>
               <span style={{fontSize:22}}>{p.icon}</span>
               <div style={{flex:1}}>
-                <div style={{fontWeight:500,fontSize:'.92rem',color:payment===p.id&&p.ln?'#c084fc':'var(--text)'}}>{p.label}</div>
-                <div style={{fontSize:'.72rem',color:payment===p.id&&p.ln?'#9333EA':'var(--muted)'}}>{p.sub}</div>
+                <div style={{fontWeight:500,fontSize:'.9rem',color:payment===p.id&&p.ln?'var(--ln2)':'var(--tx)'}}>{p.lbl}</div>
+                <div style={{fontSize:'.7rem',color:payment===p.id&&p.ln?'var(--ln)':'var(--mu)'}}>{p.sub}</div>
               </div>
-              {p.ln && <span className="badge badge-ln" style={{fontSize:'.6rem',padding:'2px 7px'}}>Best</span>}
-              {payment===p.id && <span style={{color:p.ln?'#c084fc':'var(--orange)'}}><Ico n="chk" sz={16}/></span>}
+              {p.ln&&<span className="bg0 bgl" style={{fontSize:'.6rem',padding:'2px 7px'}}>Best</span>}
+              {payment===p.id&&<span style={{color:p.ln?'var(--ln2)':'var(--or)',marginLeft:4}}><I n="chk" s={15}/></span>}
             </div>
           ))}
         </div>
 
         {/* Price estimate */}
-        <div className={payment==='lightning'?'card-ln':'card-orange'} style={{padding:'16px'}}>
-          <div className="section-label" style={{marginBottom:10}}>Price estimate</div>
+        <div className={payment==='lightning'?'cl':'co'} style={{padding:'16px'}}>
+          <div className="lbl" style={{marginBottom:9}}>Price estimate {surge&&<span className="surge" style={{marginLeft:8,fontSize:'.62rem',padding:'2px 7px'}}>🔥 Surge ×1.2</span>}</div>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:10}}>
             <div>
-              <div className="price-chip">{fmtZAR(price)}</div>
-              {payment==='lightning' && (
+              <div className="pchip">{fmtR(price)}</div>
+              {payment==='lightning'&&(
                 <div style={{marginTop:8}}>
-                  <span className="sats-chip">⚡ {fmtSats(sats)}</span>
-                  <div style={{marginTop:4,fontSize:'.7rem',color:'#6b7280'}}>₿ {fmtBTC(sats)}</div>
+                  <span className="schip">⚡ {fmtS(sats)}</span>
+                  <div style={{marginTop:3,fontSize:'.7rem',color:'#555'}}>₿ {fmtBTC(sats)}</div>
                 </div>
               )}
             </div>
-            <div style={{textAlign:'right',fontSize:'.78rem',color:'var(--muted)',lineHeight:1.8}}>
+            <div style={{textAlign:'right',fontSize:'.77rem',color:'var(--mu)',lineHeight:1.9}}>
               <div>~{dist} km</div>
-              <div>{VEHICLES.find(v=>v.id===vehicle).label}</div>
+              <div>{VEHICLES.find(v=>v.id===vehicle).n}</div>
               {helpers>0&&<div>{helpers} helper{helpers>1?'s':''}</div>}
             </div>
           </div>
-          {payment==='lightning' && (
-            <div style={{background:'rgba(147,51,234,.08)',border:'1px solid rgba(147,51,234,.2)',borderRadius:6,padding:'8px 12px',fontSize:'.75rem',color:'#c084fc',lineHeight:1.6}}>
-              ⚡ A BOLT11 invoice is generated at checkout. BTC rate locks at booking time. Zero fees.
+          {payment==='lightning'&&(
+            <div style={{background:'rgba(147,51,234,.08)',border:'1px solid rgba(147,51,234,.18)',borderRadius:6,padding:'8px 12px',fontSize:'.74rem',color:'var(--ln2)',lineHeight:1.6}}>
+              ⚡ BOLT11 invoice generated at checkout. BTC rate locked at booking. Zero fees.
             </div>
           )}
         </div>
       </div>
 
-      <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:420,background:'var(--dark)',borderTop:'1px solid var(--border)',padding:'16px 20px 28px'}}>
-        <button className={payment==='lightning'?'btn-ln':'btn-primary'} onClick={()=>onNext({pickup,dropoff,vehicle,goods,helpers,payment,price,dist,sats})}>
-          {payment==='lightning' ? '⚡ Pay '+fmtSats(sats) : 'Find Driver — '+fmtZAR(price)}
+      <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:430,background:'var(--dk)',borderTop:'1px solid var(--br)',padding:'14px 18px 28px'}}>
+        <button className={payment==='lightning'?'bl':'bp'} onClick={()=>onNext({pickup,dropoff,vehicle,goods,helpers,payment,price,dist,sats})}>
+          {payment==='lightning'?`⚡ Pay ${fmtS(sats)}`:`Find Driver — ${fmtR(price)}`}
         </button>
       </div>
     </div>
   );
 };
 
-/* ─────────── SEARCHING ─────────── */
-const CustomerSearching = ({booking, onMatched}) => {
-  const [status, setStatus] = useState('Scanning nearby drivers…');
+/* ── SEARCHING ── */
+const Searching = ({booking, onMatched}) => {
+  const [st, setSt] = useState('Scanning nearby drivers…');
   useEffect(()=>{
-    const ss=['Scanning nearby drivers…','Found 3 drivers in your area','Matching best available…','Confirming availability…','Driver accepted! 🎉'];
-    let i=0; const t=setInterval(()=>{ i++; if(i<ss.length)setStatus(ss[i]); if(i>=4){clearInterval(t);setTimeout(onMatched,800);} },1100);
+    const ss=['Scanning nearby drivers…','Found 4 drivers nearby','Running AI match score…','Best match confirmed ✓','Driver accepted! 🎉'];
+    let i=0; const t=setInterval(()=>{ i++; if(i<ss.length)setSt(ss[i]); if(i>=4){clearInterval(t);setTimeout(onMatched,800);} },1100);
     return ()=>clearInterval(t);
   },[]);
   return (
-    <div style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'40px 24px'}}>
-      <div style={{position:'relative',width:120,height:120,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:48}}>
-        <div className="radar-ring"/><div className="radar-ring"/><div className="radar-ring"/>
-        <div style={{zIndex:10,width:48,height:48,background:'var(--orange)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,boxShadow:'0 0 20px rgba(255,98,0,.5)'}}>🛻</div>
+    <div style={{minHeight:'100vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'40px 22px'}}>
+      <div style={{position:'relative',width:120,height:120,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:44}}>
+        <div className="rr"/><div className="rr"/><div className="rr"/>
+        <div style={{zIndex:10,width:48,height:48,background:'var(--or)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,boxShadow:'0 0 22px rgba(255,98,0,.5)'}}>🛻</div>
       </div>
-      <div className="display" style={{fontSize:'2rem',fontWeight:900,letterSpacing:'.02em',marginBottom:8,textAlign:'center'}}>FINDING YOUR DRIVER</div>
-      <div style={{color:'var(--orange)',fontSize:'.9rem',fontWeight:500,marginBottom:36,textAlign:'center'}}>{status}</div>
-      <div className="card" style={{width:'100%',padding:'16px'}}>
+      <div className="D" style={{fontSize:'2rem',fontWeight:900,letterSpacing:'.02em',marginBottom:8,textAlign:'center'}}>FINDING YOUR DRIVER</div>
+      <div style={{color:'var(--or)',fontSize:'.88rem',fontWeight:500,marginBottom:34,textAlign:'center'}}>{st}</div>
+      <div className="c0" style={{width:'100%',padding:'16px'}}>
         <div style={{display:'flex',alignItems:'stretch',gap:12}}>
-          <div className="route-line"><div className="route-dot pickup"/><div className="route-connector"/><div className="route-dot dropoff"/></div>
+          <div className="rl"><div className="rd p"/><div className="rc"/><div className="rd d"/></div>
           <div style={{flex:1}}>
-            <div style={{fontSize:'.88rem',fontWeight:500,marginBottom:14}}>{booking.pickup}</div>
-            <div style={{fontSize:'.88rem',fontWeight:500}}>{booking.dropoff}</div>
+            <div style={{fontSize:'.87rem',fontWeight:500,marginBottom:13}}>{booking.pickup}</div>
+            <div style={{fontSize:'.87rem',fontWeight:500}}>{booking.dropoff}</div>
           </div>
         </div>
-        <div style={{borderTop:'1px solid var(--border)',marginTop:14,paddingTop:14,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-          <div style={{fontSize:'.8rem',color:'var(--muted)'}}>{VEHICLES.find(v=>v.id===booking.vehicle).emoji} {VEHICLES.find(v=>v.id===booking.vehicle).label}</div>
+        <div style={{borderTop:'1px solid var(--br)',marginTop:13,paddingTop:13,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div style={{fontSize:'.78rem',color:'var(--mu)'}}>{VEHICLES.find(v=>v.id===booking.vehicle).e} {VEHICLES.find(v=>v.id===booking.vehicle).n}</div>
           <div style={{textAlign:'right'}}>
-            <div style={{fontFamily:'Barlow Condensed',fontWeight:800,color:'var(--orange)',fontSize:'1.1rem'}}>{fmtZAR(booking.price)}</div>
-            {booking.payment==='lightning'&&<div style={{fontSize:'.72rem',color:'#c084fc',fontWeight:600}}>⚡ {fmtSats(booking.sats)}</div>}
+            <div className="D" style={{fontWeight:800,color:'var(--or)',fontSize:'1.1rem'}}>{fmtR(booking.price)}</div>
+            {booking.payment==='lightning'&&<div style={{fontSize:'.7rem',color:'var(--ln2)',fontWeight:600}}>⚡ {fmtS(booking.sats)}</div>}
           </div>
         </div>
       </div>
@@ -542,311 +755,340 @@ const CustomerSearching = ({booking, onMatched}) => {
   );
 };
 
-/* ─────────── MATCHED ─────────── */
-const DriverMatched = ({booking, onTrack}) => {
-  const drv = {name:'Sipho Nkosi',rating:4.7,trips:312,vehicle:'Ford Ranger 1-ton · JHB 123 GP',eta:8};
+/* ── DRIVER MATCHED ── */
+const Matched = ({booking, onTrack}) => {
+  const drv = {name:'Sipho Nkosi',rating:4.8,trips:447,vehicle:'Ford Ranger 1-ton · JHB 123 GP',eta:7,match:94};
   return (
     <div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}>
-      <div style={{background:'#166534',padding:'14px 20px',display:'flex',alignItems:'center',gap:10}}>
-        <Ico n="chk" sz={20} c="#4ade80"/>
+      <div style={{background:'#14532d',padding:'13px 18px',display:'flex',alignItems:'center',gap:10}}>
+        <I n="chk" s={20} c="var(--gr)"/>
         <div>
-          <div style={{fontFamily:'Barlow Condensed',fontWeight:800,fontSize:'1.1rem',color:'#4ade80'}}>DRIVER MATCHED!</div>
-          <div style={{fontSize:'.78rem',color:'#86efac'}}>{booking.payment==='lightning'?'⚡ '+fmtSats(booking.sats)+' confirmed':'Your bakkie is on the way'}</div>
+          <div className="D" style={{fontWeight:800,fontSize:'1.1rem',color:'var(--gr)'}}>DRIVER MATCHED!</div>
+          <div style={{fontSize:'.77rem',color:'#86efac'}}>{booking.payment==='lightning'?`⚡ ${fmtS(booking.sats)} confirmed`:'Your bakkie is on the way'}</div>
         </div>
-        <div style={{marginLeft:'auto',fontFamily:'Barlow Condensed',fontWeight:900,fontSize:'1.8rem',color:'#4ade80'}}>{drv.eta}<span style={{fontSize:'1rem',fontWeight:600}}> min</span></div>
+        <div style={{marginLeft:'auto',textAlign:'right'}}>
+          <div className="D" style={{fontWeight:900,fontSize:'1.8rem',color:'var(--gr)'}}>{drv.eta}<span style={{fontSize:'1rem',fontWeight:600}}> min</span></div>
+        </div>
       </div>
-      <div className="scroll-area" style={{flex:1,padding:'20px 20px 140px'}}>
-        <div className="map-placeholder" style={{marginBottom:20}}>
-          <div className="map-grid"/>
-          <div className="map-road-h" style={{top:'40%'}}/><div className="map-road-h" style={{top:'65%'}}/>
-          <div className="map-road-v" style={{left:'30%'}}/><div className="map-road-v" style={{left:'65%'}}/>
-          <div style={{position:'absolute',left:'12%',top:'55%',fontSize:18}}>📍</div>
-          <div style={{position:'absolute',right:'10%',top:'30%',fontSize:18}}>🏁</div>
-          <div className="moving-truck">🚛</div>
-          {booking.payment==='lightning'&&<div style={{position:'absolute',bottom:10,left:10,background:'rgba(0,0,0,.85)',border:'1px solid #9333EA',borderRadius:6,padding:'4px 10px',fontSize:'.72rem',color:'#c084fc'}}>⚡ Paid · {fmtSats(booking.sats)}</div>}
+
+      <div className="scroll" style={{flex:1,padding:'18px 18px 140px'}}>
+        <div className="map" style={{marginBottom:18}}>
+          <div className="mgrid"/>
+          <div className="mrh" style={{top:'40%'}}/><div className="mrh" style={{top:'65%'}}/>
+          <div className="mrv" style={{left:'30%'}}/><div className="mrv" style={{left:'65%'}}/>
+          <div style={{position:'absolute',left:'11%',top:'55%',fontSize:18}}>📍</div>
+          <div style={{position:'absolute',right:'9%',top:'28%',fontSize:18}}>🏁</div>
+          <div className="tk">🚛</div>
+          <div style={{position:'absolute',top:10,right:10,background:'rgba(0,0,0,.85)',border:'1px solid var(--or)',borderRadius:6,padding:'4px 10px',fontSize:'.72rem',fontWeight:600,color:'var(--or)'}}>ETA {drv.eta} min</div>
+          {booking.payment==='lightning'&&<div style={{position:'absolute',bottom:10,left:10,background:'rgba(0,0,0,.85)',border:'1px solid var(--ln)',borderRadius:6,padding:'4px 10px',fontSize:'.7rem',color:'var(--ln2)'}}>⚡ Paid · {fmtS(booking.sats)}</div>}
         </div>
-        <div className="card-orange" style={{padding:0,overflow:'hidden',marginBottom:20}}>
-          <div style={{padding:'16px 16px 0'}}>
-            <div style={{display:'flex',alignItems:'center',gap:14}}>
-              <div style={{width:56,height:56,borderRadius:'50%',background:'var(--surface)',border:'2px solid var(--orange)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>👨🏾</div>
+
+        {/* Driver card */}
+        <div className="co" style={{padding:0,overflow:'hidden',marginBottom:18}}>
+          <div style={{padding:'15px 15px 0'}}>
+            <div style={{display:'flex',alignItems:'center',gap:13}}>
+              <div style={{width:56,height:56,borderRadius:'50%',background:'var(--sf)',border:'2px solid var(--or)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,flexShrink:0}}>👨🏾</div>
               <div style={{flex:1}}>
-                <div style={{display:'flex',alignItems:'center',gap:8}}>
-                  <span style={{fontFamily:'Barlow Condensed',fontWeight:800,fontSize:'1.2rem'}}>{drv.name}</span>
-                  <span className="badge badge-green"><Ico n="chk" sz={8}/>Verified</span>
+                <div style={{display:'flex',alignItems:'center',gap:7,flexWrap:'wrap'}}>
+                  <span className="D" style={{fontWeight:800,fontSize:'1.15rem'}}>{drv.name}</span>
+                  <span className="bg0 bgg"><I n="chk" s={8}/>Verified</span>
                 </div>
-                <div style={{marginTop:2}}><Stars rating={drv.rating}/><span style={{fontSize:'.78rem',color:'var(--muted)',marginLeft:6}}>{drv.rating} · {drv.trips} trips</span></div>
-                <div style={{fontSize:'.78rem',color:'var(--muted)',marginTop:4}}>🚛 {drv.vehicle}</div>
+                <div style={{marginTop:2,fontSize:'.9rem'}}><Stars r={drv.rating}/><span style={{fontSize:'.76rem',color:'var(--mu)',marginLeft:5}}>{drv.rating} · {drv.trips} trips</span></div>
+                <div style={{fontSize:'.76rem',color:'var(--mu)',marginTop:3}}>🚛 {drv.vehicle}</div>
+              </div>
+              <div style={{textAlign:'center'}}>
+                <MatchRing pct={drv.match}/>
+                <div style={{fontSize:'.6rem',color:'var(--mu)',marginTop:2}}>AI Match</div>
               </div>
             </div>
           </div>
-          <div style={{height:1,background:'var(--border)',margin:'14px 0'}}/>
-          <div style={{display:'flex',padding:'0 16px 16px',gap:10}}>
-            {[['phone','Call',<Ico n="phone" sz={20} c="var(--orange)"/>],['💬','WhatsApp',<span style={{fontSize:20}}>💬</span>]].map(([id,lbl,ico])=>(
-              <button key={id} style={{flex:1,background:'var(--card)',border:'1px solid var(--border)',borderRadius:8,padding:10,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:6,color:'var(--text)'}}>
-                {ico}<span style={{fontSize:'.75rem',fontWeight:500}}>{lbl}</span>
+          <div style={{height:1,background:'var(--br)',margin:'13px 0'}}/>
+          <div style={{display:'flex',padding:'0 15px 15px',gap:10}}>
+            {[['phone','Call',<I n="phone" s={18} c="var(--or)"/>],['msg','WhatsApp',<span style={{fontSize:18}}>💬</span>]].map(([id,lbl,ico])=>(
+              <button key={id} style={{flex:1,background:'var(--cd)',border:'1px solid var(--br)',borderRadius:8,padding:'10px 4px',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:5,color:'var(--tx)'}}>
+                {ico}<span style={{fontSize:'.72rem',fontWeight:500}}>{lbl}</span>
               </button>
             ))}
-            <button style={{flex:1,background:'rgba(239,68,68,.1)',border:'1px solid rgba(239,68,68,.3)',borderRadius:8,padding:10,cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:6}}>
-              <Ico n="shield" sz={20} c="#f87171"/><span style={{fontSize:'.75rem',fontWeight:500,color:'#f87171'}}>Panic</span>
+            <button style={{flex:1,background:'rgba(239,68,68,.08)',border:'1px solid rgba(239,68,68,.28)',borderRadius:8,padding:'10px 4px',cursor:'pointer',display:'flex',flexDirection:'column',alignItems:'center',gap:5}}>
+              <I n="shield" s={18} c="var(--re)"/><span style={{fontSize:'.72rem',fontWeight:500,color:'var(--re)'}}>Panic</span>
             </button>
           </div>
         </div>
+
+        {/* AI match breakdown */}
+        <div className="cl" style={{padding:'13px 15px',marginBottom:18}}>
+          <div style={{display:'flex',alignItems:'center',gap:7,marginBottom:10}}>
+            <I n="spark" s={14} c="var(--ln2)"/>
+            <div className="lbl" style={{margin:0}}>AI Match Breakdown</div>
+          </div>
+          {[['Route Familiarity','95%'],['Rating Score','96%'],['Vehicle Match','100%'],['Response Time','88%']].map(([k,v])=>(
+            <div key={k} style={{display:'flex',justifyContent:'space-between',marginBottom:6,fontSize:'.78rem'}}>
+              <span style={{color:'var(--mu)'}}>{k}</span>
+              <span style={{fontWeight:600,color:'var(--ln2)'}}>{v}</span>
+            </div>
+          ))}
+        </div>
       </div>
-      <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:420,background:'var(--dark)',borderTop:'1px solid var(--border)',padding:'16px 20px 28px'}}>
-        <button className="btn-primary" onClick={onTrack}>Track Live Trip</button>
+
+      <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:430,background:'var(--dk)',borderTop:'1px solid var(--br)',padding:'14px 18px 28px'}}>
+        <button className="bp" onClick={onTrack}>Track Live Trip</button>
       </div>
     </div>
   );
 };
 
-/* ─────────── TRACKING ─────────── */
-const CustomerTracking = ({booking, onDone}) => {
-  const [progress, setProgress] = useState(15);
+/* ── TRACKING ── */
+const Tracking = ({booking, onDone}) => {
+  const [prog, setProg] = useState(12);
   useEffect(()=>{
-    const t=setInterval(()=>setProgress(p=>{if(p>=100){clearInterval(t);return 100;}return p+(Math.random()*3+.5);}),600);
+    const t=setInterval(()=>setProg(p=>{if(p>=100){clearInterval(t);return 100;}return p+(Math.random()*3+.6);}),650);
     return ()=>clearInterval(t);
   },[]);
-  const done = progress>=100;
+  const done = prog>=100;
   return (
     <div style={{minHeight:'100vh',display:'flex',flexDirection:'column'}}>
       <div className="topbar">
-        <div className="display" style={{fontSize:'1.2rem',fontWeight:800,letterSpacing:'.05em'}}>{done?'✅ TRIP COMPLETE':'🛻 LIVE TRACKING'}</div>
-        <span className="badge badge-green"><span className="pulse-dot" style={{width:5,height:5}}/>Live</span>
+        <div className="D" style={{fontSize:'1.2rem',fontWeight:800,letterSpacing:'.05em'}}>{done?'✅ COMPLETE':'🛻 LIVE TRACKING'}</div>
+        <span className="bg0 bgg"><span className="pdot" style={{width:5,height:5}}/>Live</span>
       </div>
-      <div className="scroll-area" style={{flex:1,padding:'20px 20px 100px'}}>
-        <div className="map-placeholder" style={{marginBottom:20}}>
-          <div className="map-grid"/>
-          <div className="map-road-h" style={{top:'40%'}}/><div className="map-road-h" style={{top:'65%'}}/>
-          <div className="map-road-v" style={{left:'30%'}}/><div className="map-road-v" style={{left:'65%'}}/>
-          <div style={{position:'absolute',left:'12%',top:'55%',fontSize:18}}>📍</div>
-          <div style={{position:'absolute',right:'10%',top:'30%',fontSize:18}}>🏁</div>
-          <div className="moving-truck">🚛</div>
+      <div className="scroll" style={{flex:1,padding:'18px 18px 100px'}}>
+        <div className="map" style={{marginBottom:18}}>
+          <div className="mgrid"/>
+          <div className="mrh" style={{top:'40%'}}/><div className="mrh" style={{top:'65%'}}/>
+          <div className="mrv" style={{left:'30%'}}/><div className="mrv" style={{left:'65%'}}/>
+          <div style={{position:'absolute',left:'11%',top:'55%',fontSize:18}}>📍</div>
+          <div style={{position:'absolute',right:'9%',top:'28%',fontSize:18}}>🏁</div>
+          <div className="tk">🚛</div>
         </div>
-        <div className="card" style={{padding:'16px',marginBottom:20}}>
-          <div style={{display:'flex',justifyContent:'space-between',marginBottom:10}}>
-            <span className="display" style={{fontWeight:800,fontSize:'1rem'}}>{done?'Arrived at drop-off':'En route · '+Math.round(progress)+'%'}</span>
-            <span style={{color:'var(--orange)',fontWeight:700,fontSize:'.85rem'}}>{done?'Done!':'~'+Math.max(1,Math.round((100-progress)/8))+' min'}</span>
+        <div className="c0" style={{padding:'15px',marginBottom:18}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:9}}>
+            <span className="D" style={{fontWeight:800,fontSize:'1rem'}}>{done?'Arrived at drop-off':`En route · ${Math.round(prog)}%`}</span>
+            <span style={{color:'var(--or)',fontWeight:700,fontSize:'.84rem'}}>{done?'Done!':`~${Math.max(1,Math.round((100-prog)/8))} min`}</span>
           </div>
-          <div style={{background:'var(--surface)',borderRadius:4,height:8,overflow:'hidden'}}>
-            <div style={{height:'100%',background:done?'#4ade80':'var(--orange)',width:Math.min(100,progress)+'%',borderRadius:4,transition:'width .6s ease'}}/>
+          <div style={{background:'var(--sf)',borderRadius:4,height:8,overflow:'hidden'}}>
+            <div style={{height:'100%',background:done?'var(--gr)':'var(--or)',width:Math.min(100,prog)+'%',borderRadius:4,transition:'width .6s ease'}}/>
+          </div>
+          <div style={{display:'flex',justifyContent:'space-between',marginTop:7,fontSize:'.7rem',color:'var(--mu)'}}>
+            <span>📍 {booking.pickup}</span><span>🏁 {booking.dropoff}</span>
           </div>
         </div>
+
         {done && (
-          <div className="card-ln slide-up" style={{padding:'20px',textAlign:'center'}}>
+          <div className="cl su" style={{padding:'20px',textAlign:'center'}}>
             <div style={{fontSize:36,marginBottom:8}}>✅</div>
-            <div className="display" style={{fontSize:'1.6rem',fontWeight:900}}>DELIVERY COMPLETE</div>
-            <div style={{color:'var(--muted)',fontSize:'.85rem',marginTop:4}}>Rate Sipho's service</div>
-            <div style={{margin:'14px 0',fontSize:28}}>{[1,2,3,4,5].map(s=><span key={s} style={{cursor:'pointer',color:s<=4?'var(--yellow)':'var(--border)',marginRight:4}}>★</span>)}</div>
-            <div className="display" style={{fontWeight:900,fontSize:'1.3rem',color:booking.payment==='lightning'?'#c084fc':'var(--orange)'}}>
-              {booking.payment==='lightning'?'⚡ '+fmtSats(booking.sats):fmtZAR(booking.price)}
+            <div className="D" style={{fontSize:'1.6rem',fontWeight:900}}>DELIVERY COMPLETE</div>
+            <div style={{color:'var(--mu)',fontSize:'.84rem',marginTop:4}}>Rate Sipho's service</div>
+            <div style={{margin:'13px 0',fontSize:28}}>{[1,2,3,4,5].map(s=><span key={s} style={{cursor:'pointer',color:s<=4?'var(--ye)':'var(--br)',marginRight:3}}>★</span>)}</div>
+            <div className="D" style={{fontWeight:900,fontSize:'1.3rem',color:booking.payment==='lightning'?'var(--ln2)':'var(--or)'}}>
+              {booking.payment==='lightning'?`⚡ ${fmtS(booking.sats)}`:fmtR(booking.price)}
             </div>
-            <div style={{fontSize:'.74rem',color:'var(--muted)',marginTop:2}}>
-              {booking.payment==='lightning'?'= '+fmtZAR(booking.price)+' · Lightning settled':PAYMENT.find(p=>p.id===booking.payment).label}
+            <div style={{fontSize:'.73rem',color:'var(--mu)',marginTop:2}}>
+              {booking.payment==='lightning'?`= ${fmtR(booking.price)} · Lightning settled`:PAYMENT.find(p=>p.id===booking.payment).lbl}
             </div>
           </div>
         )}
       </div>
-      {done && (
-        <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:420,background:'var(--dark)',borderTop:'1px solid var(--border)',padding:'16px 20px 28px'}}>
-          <button className="btn-primary" onClick={onDone}>Submit Rating &amp; Done</button>
+      {done&&(
+        <div style={{position:'fixed',bottom:0,left:'50%',transform:'translateX(-50%)',width:'100%',maxWidth:430,background:'var(--dk)',borderTop:'1px solid var(--br)',padding:'14px 18px 28px'}}>
+          <button className="bp" onClick={onDone}>Submit Rating &amp; Done</button>
         </div>
       )}
     </div>
   );
 };
 
-/* ─────────── DRIVER HOME ─────────── */
+/* ── DRIVER HOME ── */
 const DriverHome = ({onBack}) => {
-  const [tab, setTab]           = useState('home');
-  const [job, setJob]           = useState(null);
+  const [tab,      setTab]      = useState('home');
+  const [job,      setJob]      = useState(null);
   const [accepted, setAccepted] = useState(false);
-  const earnings = {today:480, week:2840, month:12400};
+  const earn = {today:480,week:2840,month:12400};
 
-  const pendingJob = {
+  const pj = {
     id:'J-2841',customer:'Thabo M.',pickup:'Boksburg Industrial, 14th Ave',dropoff:'Germiston, Victor St 22',
-    dist:9.4,vehicle:'1-ton Bakkie',goods:'Furniture (3-seater couch + beds)',helpers:1,price:280,
-    payment:'lightning',sats:zarToSats(280),rating:4.6,
+    dist:9.4,vehicle:'1-ton Bakkie',goods:'Furniture (3-seater couch + 2 beds)',helpers:1,price:280,
+    payment:'lightning',sats:zarToSats(280),rating:4.6,match:91,
   };
 
-  useEffect(()=>{const t=setTimeout(()=>setJob(pendingJob),2000);return()=>clearTimeout(t);},[]);
+  useEffect(()=>{const t=setTimeout(()=>setJob(pj),2200);return()=>clearTimeout(t);},[]);
 
   return (
     <div style={{minHeight:'100vh',display:'flex',flexDirection:'column',paddingBottom:60}}>
       <div className="topbar">
-        <button onClick={onBack} style={{background:'none',border:'none',cursor:'pointer',color:'var(--text)',display:'flex',alignItems:'center',gap:6}}><Ico n="back"/></button>
-        <div className="display" style={{fontSize:'1.3rem',fontWeight:800,letterSpacing:'.05em'}}>DRIVER DASH</div>
-        <div style={{position:'relative'}}><Ico n="user" sz={22}/><div className="notif-badge">1</div></div>
+        <button onClick={onBack} style={{background:'none',border:'none',cursor:'pointer',color:'var(--tx)',display:'flex',alignItems:'center',gap:6}}><I n="back"/></button>
+        <div className="D" style={{fontSize:'1.3rem',fontWeight:800,letterSpacing:'.05em'}}>DRIVER DASH</div>
+        <div style={{position:'relative'}}><I n="user" s={22}/><div className="ndot">1</div></div>
       </div>
 
-      {tab==='home' && (
-        <div className="scroll-area" style={{flex:1,padding:'20px 20px 80px'}}>
-          <div className="card" style={{padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:20}}>
+      {tab==='home'&&(
+        <div className="scroll" style={{flex:1,padding:'18px 18px 80px'}}>
+          {/* Online toggle */}
+          <div className="c0" style={{padding:'13px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18}}>
             <div>
-              <div style={{fontWeight:600,fontSize:'.95rem',display:'flex',alignItems:'center',gap:8}}><span className="pulse-dot"/>Online — Accepting Jobs</div>
-              <div style={{fontSize:'.75rem',color:'var(--muted)',marginTop:2}}>Boksburg &amp; surrounds · 0–30 km</div>
+              <div style={{fontWeight:600,fontSize:'.92rem',display:'flex',alignItems:'center',gap:7}}><span className="pdot"/>Online — Accepting Jobs</div>
+              <div style={{fontSize:'.73rem',color:'var(--mu)',marginTop:2}}>Boksburg &amp; surrounds · 0–30 km</div>
             </div>
-            <div style={{width:44,height:24,background:'#166534',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'flex-end',padding:'0 3px',border:'1px solid #4ade80',cursor:'pointer'}}>
-              <div style={{width:18,height:18,background:'#4ade80',borderRadius:'50%'}}/>
+            <div style={{width:44,height:24,background:'#14532d',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'flex-end',padding:'0 3px',cursor:'pointer',border:'1px solid var(--gr)'}}>
+              <div style={{width:18,height:18,background:'var(--gr)',borderRadius:'50%'}}/>
             </div>
           </div>
 
-          <div className="section-label">Earnings</div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:8}}>
-            {[{l:'Today',v:fmtZAR(earnings.today),a:true},{l:'This Week',v:fmtZAR(earnings.week)},{l:'Month',v:fmtZAR(earnings.month)}].map(e=>(
-              <div key={e.l} className={e.a?'card-orange':'card'} style={{padding:'14px 10px',textAlign:'center',borderRadius:10}}>
-                <div className="display" style={{fontWeight:900,fontSize:'1.1rem',color:e.a?'var(--orange)':'var(--text)'}}>{e.v}</div>
-                <div style={{fontSize:'.65rem',color:'var(--muted)',marginTop:2,textTransform:'uppercase',letterSpacing:'.06em'}}>{e.l}</div>
+          {/* Earnings */}
+          <div className="lbl">Earnings</div>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:9,marginBottom:8}}>
+            {[{l:'Today',v:fmtR(earn.today),a:true},{l:'Week',v:fmtR(earn.week)},{l:'Month',v:fmtR(earn.month)}].map(e=>(
+              <div key={e.l} className={e.a?'co':'c0'} style={{padding:'13px 8px',textAlign:'center',borderRadius:10}}>
+                <div className="D" style={{fontWeight:900,fontSize:'1.1rem',color:e.a?'var(--or)':'var(--tx)'}}>{e.v}</div>
+                <div style={{fontSize:'.63rem',color:'var(--mu)',marginTop:2,textTransform:'uppercase',letterSpacing:'.06em'}}>{e.l}</div>
               </div>
             ))}
           </div>
-          {/* Sats equivalent */}
-          <div className="card-ln" style={{padding:'10px 14px',marginBottom:20,display:'flex',alignItems:'center',gap:10}}>
-            <span style={{fontSize:18}}>⚡</span>
+          <div className="cl" style={{padding:'10px 13px',marginBottom:18,display:'flex',alignItems:'center',gap:10}}>
+            <span style={{fontSize:16}}>⚡</span>
             <div style={{flex:1}}>
-              <div style={{fontSize:'.75rem',color:'var(--muted)'}}>Today in sats</div>
-              <div className="display" style={{fontWeight:800,fontSize:'1.1rem',color:'#c084fc'}}>{fmtSats(zarToSats(earnings.today))}</div>
+              <div style={{fontSize:'.73rem',color:'var(--mu)'}}>Today in sats</div>
+              <div className="D" style={{fontWeight:800,fontSize:'1.05rem',color:'var(--ln2)'}}>{fmtS(zarToSats(earn.today))}</div>
             </div>
             <div style={{textAlign:'right'}}>
-              <div style={{fontSize:'.68rem',color:'var(--muted)'}}>BTC equivalent</div>
-              <div className="display" style={{fontWeight:700,fontSize:'.85rem',color:'#fbbf24'}}>₿ {fmtBTC(zarToSats(earnings.today))}</div>
+              <div style={{fontSize:'.67rem',color:'var(--mu)'}}>BTC</div>
+              <div className="D" style={{fontWeight:700,fontSize:'.85rem',color:'#fbbf24'}}>₿ {fmtBTC(zarToSats(earn.today))}</div>
             </div>
           </div>
 
-          {job && !accepted && (
-            <div className="card-ln slide-up" style={{padding:'16px',marginBottom:20}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:14}}>
+          {/* Incoming job */}
+          {job&&!accepted&&(
+            <div className="cl su" style={{padding:'15px',marginBottom:18}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:13}}>
                 <div>
-                  <div className="display" style={{fontWeight:900,fontSize:'1.2rem',color:'#c084fc'}}>⚡ NEW JOB #{job.id}</div>
-                  <div style={{fontSize:'.78rem',color:'var(--muted)'}}>{job.customer} · <Stars rating={job.rating}/></div>
+                  <div className="D" style={{fontWeight:900,fontSize:'1.15rem',color:'var(--ln2)'}}>⚡ NEW JOB #{job.id}</div>
+                  <div style={{fontSize:'.76rem',color:'var(--mu)'}}>{job.customer} · <Stars r={job.rating}/></div>
                 </div>
-                <div style={{textAlign:'right'}}>
-                  <div className="display" style={{fontWeight:900,fontSize:'1.3rem',color:'var(--orange)'}}>{fmtZAR(job.price)}</div>
-                  <div className="sats-chip" style={{marginTop:4,fontSize:'.7rem',padding:'2px 8px'}}>⚡ {fmtSats(job.sats)}</div>
+                <div style={{textAlign:'right',display:'flex',alignItems:'center',gap:10}}>
+                  <div>
+                    <div className="D" style={{fontWeight:900,fontSize:'1.2rem',color:'var(--or)'}}>{fmtR(job.price)}</div>
+                    <div className="schip" style={{marginTop:3,fontSize:'.68rem',padding:'2px 7px'}}>⚡ {fmtS(job.sats)}</div>
+                  </div>
+                  <div style={{textAlign:'center'}}>
+                    <MatchRing pct={job.match} color="var(--ln2)"/>
+                    <div style={{fontSize:'.57rem',color:'var(--mu)',marginTop:1}}>AI</div>
+                  </div>
                 </div>
               </div>
-              <div style={{display:'flex',gap:12,marginBottom:14}}>
-                <div className="route-line"><div className="route-dot pickup"/><div className="route-connector"/><div className="route-dot dropoff"/></div>
+              <div style={{display:'flex',gap:11,marginBottom:13}}>
+                <div className="rl"><div className="rd p"/><div className="rc"/><div className="rd d"/></div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:'.85rem',fontWeight:500,marginBottom:14}}>{job.pickup}</div>
-                  <div style={{fontSize:'.85rem',fontWeight:500}}>{job.dropoff}</div>
+                  <div style={{fontSize:'.84rem',fontWeight:500,marginBottom:13}}>{job.pickup}</div>
+                  <div style={{fontSize:'.84rem',fontWeight:500}}>{job.dropoff}</div>
                 </div>
               </div>
-              <div style={{display:'flex',flexWrap:'wrap',gap:8,marginBottom:14}}>
-                <span className="badge">📦 {job.goods}</span>
-                <span className="badge">{job.dist} km</span>
-                <span className="badge badge-ln">⚡ Lightning</span>
-                {job.helpers>0&&<span className="badge">👷 {job.helpers} helper</span>}
+              <div style={{display:'flex',flexWrap:'wrap',gap:7,marginBottom:13}}>
+                <span className="bg0">📦 {job.goods}</span>
+                <span className="bg0">{job.dist} km</span>
+                <span className="bg0 bgl">⚡ Lightning</span>
+                {job.helpers>0&&<span className="bg0">👷 {job.helpers} helper</span>}
               </div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
-                <button className="btn-secondary" style={{padding:12}} onClick={()=>setJob(null)}>Decline</button>
-                <button className="btn-ln" style={{padding:12}} onClick={()=>setAccepted(true)}>Accept Job</button>
+                <button className="bs" style={{padding:12}} onClick={()=>setJob(null)}>Decline</button>
+                <button className="bl" style={{padding:12}} onClick={()=>setAccepted(true)}>Accept</button>
               </div>
             </div>
           )}
-          {accepted && (
-            <div className="card-ln slide-up" style={{padding:'16px',marginBottom:20}}>
-              <div className="display" style={{fontSize:'1.1rem',fontWeight:900,color:'#4ade80',marginBottom:4}}>✅ JOB ACCEPTED</div>
-              <div style={{fontSize:'.8rem',color:'var(--muted)',marginBottom:10}}>Lightning confirmed · Navigate to pickup</div>
-              <div style={{fontSize:'.85rem',fontWeight:500,marginBottom:14}}>📍 {pendingJob.pickup}</div>
+          {accepted&&(
+            <div className="cg su" style={{padding:'15px',marginBottom:18}}>
+              <div className="D" style={{fontSize:'1.05rem',fontWeight:900,color:'var(--gr)',marginBottom:3}}>✅ JOB ACCEPTED</div>
+              <div style={{fontSize:'.78rem',color:'var(--mu)',marginBottom:11}}>Lightning confirmed · Navigate to pickup</div>
+              <div style={{fontSize:'.84rem',fontWeight:500,marginBottom:13}}>📍 {pj.pickup}</div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
-                <button className="btn-yellow" style={{padding:12,fontSize:'.92rem'}}>Open Maps</button>
-                <button style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:6,padding:12,cursor:'pointer',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:'.92rem',color:'var(--text)',textTransform:'uppercase',letterSpacing:'.04em'}}>Call Customer</button>
+                <button className="by" style={{padding:12,fontSize:'.9rem'}}>Open Maps</button>
+                <button style={{background:'var(--cd)',border:'1px solid var(--br)',borderRadius:8,padding:12,cursor:'pointer',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:'.9rem',color:'var(--tx)',textTransform:'uppercase',letterSpacing:'.04em'}}>Call Customer</button>
               </div>
             </div>
           )}
 
-          <div className="section-label">Recent Trips</div>
-          {[
-            {f:'Boksburg',t:'Edenvale',dt:'Today 08:15',amt:220,pay:'lightning',r:5},
-            {f:'Germiston',t:'Alberton',dt:'Yesterday 14:30',amt:340,pay:'cash',r:4},
-            {f:'Sandton',t:'Midrand',dt:'Mon 09:00',amt:480,pay:'lightning',r:5},
-          ].map((tr,i)=>(
-            <div key={i} className="card" style={{padding:'12px 14px',marginBottom:8,display:'flex',alignItems:'center',gap:12}}>
-              <div style={{fontSize:20}}>🚛</div>
+          <div className="lbl">Recent Trips</div>
+          {[{f:'Boksburg',t:'Edenvale',dt:'Today 08:15',amt:220,pay:'lightning',r:5},{f:'Germiston',t:'Alberton',dt:'Yesterday',amt:340,pay:'cash',r:4},{f:'Sandton',t:'Midrand',dt:'Mon 09:00',amt:480,pay:'lightning',r:5}].map((tr,i)=>(
+            <div key={i} className="c0" style={{padding:'11px 13px',marginBottom:8,display:'flex',alignItems:'center',gap:11}}>
+              <div style={{fontSize:18}}>🚛</div>
               <div style={{flex:1}}>
-                <div style={{fontSize:'.85rem',fontWeight:500}}>{tr.f} → {tr.t}</div>
-                <div style={{fontSize:'.73rem',color:'var(--muted)',marginTop:2}}>{tr.dt} · <Stars rating={tr.r}/></div>
+                <div style={{fontSize:'.84rem',fontWeight:500}}>{tr.f} → {tr.t}</div>
+                <div style={{fontSize:'.72rem',color:'var(--mu)',marginTop:2}}>{tr.dt} · <Stars r={tr.r}/></div>
               </div>
               <div style={{textAlign:'right'}}>
-                <div className="display" style={{fontWeight:800,color:'var(--orange)',fontSize:'1rem'}}>{fmtZAR(tr.amt)}</div>
-                {tr.pay==='lightning'&&<div style={{fontSize:'.7rem',color:'#c084fc'}}>⚡ {fmtSats(zarToSats(tr.amt))}</div>}
+                <div className="D" style={{fontWeight:800,color:'var(--or)',fontSize:'.98rem'}}>{fmtR(tr.amt)}</div>
+                {tr.pay==='lightning'&&<div style={{fontSize:'.68rem',color:'var(--ln2)'}}>{fmtS(zarToSats(tr.amt))}</div>}
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {tab==='wallet' && (
-        <div className="scroll-area" style={{flex:1,padding:'20px 20px 80px'}}>
-          <div className="card-orange" style={{padding:'24px 20px',textAlign:'center',marginBottom:12,borderRadius:14}}>
-            <div style={{color:'var(--muted)',fontSize:'.78rem',textTransform:'uppercase',letterSpacing:'.1em'}}>ZAR Balance</div>
-            <div className="display" style={{fontSize:'3rem',fontWeight:900,color:'var(--orange)',margin:'8px 0'}}>R2,840</div>
-            <div style={{fontSize:'.8rem',color:'var(--muted)'}}>Next payout: Friday</div>
+      {tab==='wallet'&&(
+        <div className="scroll" style={{flex:1,padding:'18px 18px 80px'}}>
+          <div className="co" style={{padding:'22px 18px',textAlign:'center',marginBottom:11,borderRadius:14}}>
+            <div style={{color:'var(--mu)',fontSize:'.76rem',textTransform:'uppercase',letterSpacing:'.1em'}}>ZAR Balance</div>
+            <div className="D" style={{fontSize:'2.8rem',fontWeight:900,color:'var(--or)',margin:'7px 0'}}>R2,840</div>
+            <div style={{fontSize:'.78rem',color:'var(--mu)'}}>Next payout: Friday</div>
           </div>
-          <div className="card-ln" style={{padding:'18px 20px',marginBottom:20,borderRadius:14}}>
+          <div className="cl" style={{padding:'16px 18px',marginBottom:18,borderRadius:14}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:4}}>
               <div>
-                <div style={{color:'var(--muted)',fontSize:'.72rem',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:4}}>Lightning Balance</div>
-                <div className="display" style={{fontSize:'1.8rem',fontWeight:900,color:'#c084fc'}}>{fmtSats(zarToSats(2840))}</div>
-                <div style={{fontSize:'.8rem',color:'#9ca3af',marginTop:2}}>₿ {fmtBTC(zarToSats(2840))}</div>
+                <div style={{color:'var(--mu)',fontSize:'.7rem',textTransform:'uppercase',letterSpacing:'.1em',marginBottom:3}}>Lightning Balance</div>
+                <div className="D" style={{fontSize:'1.7rem',fontWeight:900,color:'var(--ln2)'}}>{fmtS(zarToSats(2840))}</div>
+                <div style={{fontSize:'.78rem',color:'#9ca3af',marginTop:2}}>₿ {fmtBTC(zarToSats(2840))}</div>
               </div>
-              <span style={{fontSize:28}}>⚡</span>
+              <span style={{fontSize:26}}>⚡</span>
             </div>
-            <div style={{borderTop:'1px solid rgba(147,51,234,.2)',marginTop:12,paddingTop:12}}>
-              <div style={{fontSize:'.7rem',color:'var(--muted)',marginBottom:3}}>Your Lightning Address</div>
-              <div style={{fontFamily:'monospace',fontSize:'.78rem',color:'#c084fc',fontWeight:600}}>{LN_ADDRESS}</div>
+            <div style={{borderTop:'1px solid rgba(147,51,234,.2)',marginTop:11,paddingTop:11}}>
+              <div style={{fontSize:'.7rem',color:'var(--mu)',marginBottom:3}}>Lightning Address</div>
+              <div style={{fontFamily:'monospace',fontSize:'.76rem',color:'var(--ln2)',fontWeight:600}}>{LN_ADDR}</div>
             </div>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:20}}>
-            <button className="btn-yellow" style={{padding:12,fontSize:'.92rem'}}>Withdraw ZAR</button>
-            <button className="btn-ln" style={{padding:12,fontSize:'.92rem'}}>Send Sats</button>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:18}}>
+            <button className="by" style={{padding:12,fontSize:'.9rem'}}>Withdraw ZAR</button>
+            <button className="bl" style={{padding:12,fontSize:'.9rem'}}>Send Sats</button>
           </div>
-          <div className="section-label">Payout History</div>
-          {[
-            {date:'18 Apr',amt:2100,pay:'lightning'},{date:'11 Apr',amt:1850,pay:'bank'},{date:'04 Apr',amt:2640,pay:'lightning'},
-          ].map((p,i)=>(
-            <div key={i} className="card" style={{padding:'12px 14px',marginBottom:8,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div className="lbl">Payout History</div>
+          {[{d:'18 Apr',a:2100,p:'lightning'},{d:'11 Apr',a:1850,p:'bank'},{d:'04 Apr',a:2640,p:'lightning'}].map((h,i)=>(
+            <div key={i} className="c0" style={{padding:'11px 13px',marginBottom:8,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
               <div>
-                <div style={{fontWeight:500,fontSize:'.88rem'}}>{p.pay==='lightning'?'⚡ Lightning':'🏦 Bank Transfer'}</div>
-                <div style={{fontSize:'.73rem',color:'var(--muted)',marginTop:2}}>{p.date}</div>
+                <div style={{fontWeight:500,fontSize:'.86rem'}}>{h.p==='lightning'?'⚡ Lightning':'🏦 Bank Transfer'}</div>
+                <div style={{fontSize:'.72rem',color:'var(--mu)',marginTop:2}}>{h.d}</div>
               </div>
               <div style={{textAlign:'right'}}>
-                <div className="display" style={{fontWeight:800,color:'#4ade80',fontSize:'1rem'}}>{fmtZAR(p.amt)}</div>
-                {p.pay==='lightning'&&<div style={{fontSize:'.7rem',color:'#c084fc'}}>{fmtSats(zarToSats(p.amt))}</div>}
+                <div className="D" style={{fontWeight:800,color:'var(--gr)',fontSize:'.98rem'}}>{fmtR(h.a)}</div>
+                {h.p==='lightning'&&<div style={{fontSize:'.68rem',color:'var(--ln2)'}}>{fmtS(zarToSats(h.a))}</div>}
               </div>
             </div>
           ))}
         </div>
       )}
 
-      <div className="bottomnav">
-        {[{id:'home',ico:<Ico n="home" sz={20}/>,lbl:'Home'},{id:'wallet',ico:<Ico n="wallet" sz={20}/>,lbl:'Wallet'},{id:'hist',ico:<Ico n="hist" sz={20}/>,lbl:'History'},{id:'profile',ico:<Ico n="user" sz={20}/>,lbl:'Profile'}].map(x=>(
-          <div key={x.id} className={'nav-item'+(tab===x.id?' active':'')} onClick={()=>setTab(x.id)}>{x.ico}{x.lbl}</div>
+      <div className="bnav">
+        {[{id:'home',i:<I n="home" s={20}/>,l:'Home'},{id:'wallet',i:<I n="wallet" s={20}/>,l:'Wallet'},{id:'hist',i:<I n="hist" s={20}/>,l:'History'},{id:'profile',i:<I n="user" s={20}/>,l:'Profile'}].map(x=>(
+          <div key={x.id} className={'ni'+(tab===x.id?' on':'')} onClick={()=>setTab(x.id)}>{x.i}{x.l}</div>
         ))}
       </div>
     </div>
   );
 };
 
-/* ─────────── APP ─────────── */
-function App() {
-  const [screen, setScreen]   = useState('splash');
+/* ── APP ── */
+function App(){
+  const [screen,  setScreen]  = useState('splash');
   const [booking, setBooking] = useState(null);
 
-  const handleBookingNext = b => {
-    setBooking(b);
-    setScreen(b.payment==='lightning' ? 'lightning-pay' : 'searching');
-  };
+  const go = s => setScreen(s);
+  const handleNext = b => { setBooking(b); go(b.payment==='lightning'?'ln-pay':'searching'); };
 
   return (
-    <div className="app-shell">
-      {screen==='splash'        && <Splash onRole={r=>setScreen(r==='customer'?'book':'driver')}/>}
-      {screen==='book'          && <CustomerBooking onBack={()=>setScreen('splash')} onNext={handleBookingNext}/>}
-      {screen==='lightning-pay' && <LightningPayment booking={booking} onBack={()=>setScreen('book')} onPaid={()=>setScreen('searching')}/>}
-      {screen==='searching'     && <CustomerSearching booking={booking} onMatched={()=>setScreen('matched')}/>}
-      {screen==='matched'       && <DriverMatched booking={booking} onTrack={()=>setScreen('tracking')}/>}
-      {screen==='tracking'      && <CustomerTracking booking={booking} onDone={()=>setScreen('splash')}/>}
-      {screen==='driver'        && <DriverHome onBack={()=>setScreen('splash')}/>}
+    <div className="shell">
+      {screen==='splash'     && <Splash onRole={r=>go(r==='customer'?'book':'driver')}/>}
+      {screen==='book'       && <Booking onBack={()=>go('splash')} onNext={handleNext}/>}
+      {screen==='ln-pay'     && <LightningPay booking={booking} onBack={()=>go('book')} onPaid={()=>go('searching')}/>}
+      {screen==='searching'  && <Searching booking={booking} onMatched={()=>go('matched')}/>}
+      {screen==='matched'    && <Matched booking={booking} onTrack={()=>go('tracking')}/>}
+      {screen==='tracking'   && <Tracking booking={booking} onDone={()=>go('splash')}/>}
+      {screen==='driver'     && <DriverHome onBack={()=>go('splash')}/>}
     </div>
   );
 }
