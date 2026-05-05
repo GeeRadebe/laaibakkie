@@ -44,7 +44,6 @@ Then: **Settings → Pages → Source: main / root** → rename `laaibakkie.html
 ```
 Total = Base + (R/km × distance) + (helpers × R80)
 ```
-
 ## Roadmap
 - [ ] Supabase backend + PostGIS driver geo-matching
 - [ ] Google Maps SDK (replace grid placeholder)
